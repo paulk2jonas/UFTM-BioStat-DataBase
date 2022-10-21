@@ -10,8 +10,6 @@ This script is meant to generate big, flexible databases that can be used to pra
 
 This project was inspired by my experiences as professor assistant for the Med School Biostatistic class at Universidade Federal do Triângulo Mineiro, on the 2022/1 semester. It was proposed to create a ficticious scientific paper, step-by-step, inspired by real paper chosen by each student. However, many students had trouble using the paper's pre-existing variables and creating their own in a way that would make the best use of their syllabus, as well as the manual process of populating their databases and the distribution of their data. Helping one student to automate the creation of her data, we started applying real or reality-inspired conditions to the random generators. I later decided to expand such idea to a big database that would be flexible enough to discard the need for a paper and still allow for variety among the entire class.
 
-Automatic generator of ficticious databases to be used in Biostatistic practices
-
 Table of contents
 ==========
 <!--ts-->
