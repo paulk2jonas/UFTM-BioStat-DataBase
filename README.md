@@ -1,4 +1,4 @@
-# UFTM BioStat DataBase
+# ![UFTM BioStat DataBase](Images/banner.png)
 
 ## About
 This is an automatic generator of ficticious databases originally meant to be used as support tools in Biostatistic classes.
