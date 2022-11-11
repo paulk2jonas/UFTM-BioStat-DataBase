@@ -1,4 +1,4 @@
-# ===================================================================
+# ============================================================================ #
 #
 #   UFTM BioStat DataBase
 #
@@ -11,13 +11,14 @@
 #     Add friend easter eggs
 #     Remove city_index
 #
-# ===================================================================
+# ============================================================================ #
 
 # --------------------------------- Libraries -------------------------------- #
 library(tidyverse)
 library(readxl)
 # library(here)
 
+# --------------------------------- Variables -------------------------------- #
 n <- 1000
 seed <- 42
 
@@ -71,19 +72,22 @@ state_initials <- c("Acre" = "AC",
 city_state <- paste(city, " (", state_initials[state], ")", sep = "")
 
 age_sex_by_city <- read_excel("./UFTM-BioStat-DataBase/Background_Data/age.xlsx")
+cities <- unique(age_sex_by_city$city)
+ages <- unique(age_sex_by_city$age)  # ! Currently not being used
 
+# Using pre-computed populations by sex, because computing JIT takes too long
+sex_by_city <- read.csv("./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv")
 
-# TODO: computar antes os sexos por cidade; 
 sex <- c()
 set.seed(seed)
 for (i in 1:n) {
-  if (city_state[i] %in% unique(age_sex_by_city$city)) {
+  if (city_state[i] %in% cities) {
     sex[i] <- sample(x = c("M", "F"),
                      size = 1,
-                     prob = c(sum(filter(age_sex_by_city,
-                                         city == city_state[i])$male),
-                     sum(filter(age_sex_by_city,
-                                         city == city_state[i])$female)))
+                     prob = c(filter(sex_by_city,
+                                     city == city_state[i])$male,
+                              filter(sex_by_city,
+                                     city == city_state[i])$female))
   } else {
     sex[i] <- sample(x = c("M", "F"),
                      size = 1,
@@ -92,23 +96,41 @@ for (i in 1:n) {
   }
 }
 
+# Using pre-computed values for the same reason
+age_by_sex <- read.csv("./UFTM-BioStat-DataBase/Background_Data/age_by_sex.csv")
+
 age <- c()
 set.seed(seed)
 for (i in 1:n) {
-  age[i] <- sample(x = c("M", "F"),
-                   size = 1,
-                   prob = c(filter(age_sex_by_city, city == city_state[i], )))
+  if (city_state[i] %in% cities) {
+    if (sex[i] == "M") {
+      age[i] <- sample(x = c(0:99),
+                       size = 1,
+                       prob = filter(age_sex_by_city,
+                                     city == city_state[i])$male)
+    } else {
+      age[i] <- sample(x = c(0:99),
+                       size = 1,
+                       prob = filter(age_sex_by_city,
+                                     city == city_state[i])$female)
+    }
+  } else {
+    if (sex[i] == "M") {
+      age[i] <- sample(x = c(0:99),
+                       size = 1,
+                       prob = age_by_sex$male)
+    } else {
+      age[i] <- sample(x = c(0:99),
+                       size = 1,
+                       prob = age_by_sex$female)
+    }
+  }
 }
-
-set.seed(seed)
-sex <- sample(c("M", "F"),
-              size = n,
-              replace = TRUE,
-              prob = c(105792687, 108954822) / 214747509)
 
 forename_list <- read.csv("./UFTM-BioStat-DataBase/Background_Data/first_name.csv") %>%
   select(1:4)
 
+# ? Use all sex possibilities for each name?
 male_names <- filter(forename_list, classification == "M") %>%
   select(-c(2:3))
 female_names <- filter(forename_list, classification == "F") %>%
@@ -119,12 +141,11 @@ set.seed(seed)
 for (i in 1:n) {
   if (sex[i] == "M") {
     first_name[i] <- sample(male_names$name,
-                         size = 1,
-                         prob = male_names$frequency_male / sum(male_names$frequency_male))
+                            size = 1,
+                            prob = male_names$frequency_male / sum(male_names$frequency_male))
   } else if (sex[i] == "F") {
     first_name[i] <- sample(female_names$name,
-                         size = 1,
-                         prob = female_names$frequency_female / sum(female_names$frequency_female))
+                            prob = female_names$frequency_female / sum(female_names$frequency_female))
   }
 }
 first_name <- str_to_title(first_name)
