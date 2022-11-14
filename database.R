@@ -11,6 +11,15 @@
 #     Add friend easter eggs
 #     Remove city_index
 #
+#   * The cities:
+#       Mojuí dos Campos (PA)
+#       Balneário Rincão (SC)
+#       Boa Saúde (RN)
+#       Pescaria Brava (SC)
+#       Paraíso das Águas (MS)
+#       Pinto Bandeira (RS)
+#       Januário Cicco (RN)
+#     Were excluded because they weren't on both lists at the same time.
 # ============================================================================ #
 
 # --------------------------------- Libraries -------------------------------- #
@@ -76,54 +85,58 @@ cities <- unique(age_sex_by_city$city)
 ages <- unique(age_sex_by_city$age)  # ! Currently not being used
 
 # Using pre-computed populations by sex, because computing JIT takes too long
+
+# * Not gonna delete this code right now because it was hard
+# city_state_list <- paste(city_list$city, " (", state_initials[city_list$state], ")", sep = "")
+# sex_by_city_male <- c()
+# sex_by_city_female <- c()
+# for (i in 1:length(city_state_list)) {
+#   sex_by_city_male[i] <- sum(filter(age_sex_by_city,
+#                                     city == city_state_list[i])$male)
+#   sex_by_city_female[i] <- sum(filter(age_sex_by_city,
+#                                     city == city_state_list[i])$female)
+# }
+# tail(data.frame("city" = city_state_list,
+#                 "male" = sex_by_city_male,
+#                 "female" = sex_by_city_female))
+# nrow(data.frame("city" = city_state_list,
+#                 "male" = sex_by_city_male,
+#                 "female" = sex_by_city_female))
+# sex_by_city <- data.frame("city" = city_state_list,
+#                 "male" = sex_by_city_male,
+#                 "female" = sex_by_city_female)
+# write_csv(sex_by_city, file = "./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv")
+
 sex_by_city <- read.csv("./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv")
 
 sex <- c()
 set.seed(seed)
 for (i in 1:n) {
-  if (city_state[i] %in% cities) {
-    sex[i] <- sample(x = c("M", "F"),
-                     size = 1,
-                     prob = c(filter(sex_by_city,
-                                     city == city_state[i])$male,
-                              filter(sex_by_city,
-                                     city == city_state[i])$female))
-  } else {
-    sex[i] <- sample(x = c("M", "F"),
-                     size = 1,
-                     prob = c(105792687, 108954822))
-                     #! Qual a fonte disso?
-  }
+  sex[i] <- sample(x = c("M", "F"),
+                   size = 1,
+                   prob = c(filter(sex_by_city,
+                                   city == city_state[i])$male,
+                            filter(sex_by_city,
+                                   city == city_state[i])$female))
 }
 
 # Using pre-computed values for the same reason
-age_by_sex <- read.csv("./UFTM-BioStat-DataBase/Background_Data/age_by_sex.csv")
+# age_by_sex <- read.csv("./UFTM-BioStat-DataBase/Background_Data/age_by_sex.csv")
+# ! Not used anymore, delete both the code and the file later
 
 age <- c()
 set.seed(seed)
 for (i in 1:n) {
-  if (city_state[i] %in% cities) {
-    if (sex[i] == "M") {
-      age[i] <- sample(x = c(0:99),
-                       size = 1,
-                       prob = filter(age_sex_by_city,
-                                     city == city_state[i])$male)
-    } else {
-      age[i] <- sample(x = c(0:99),
-                       size = 1,
-                       prob = filter(age_sex_by_city,
-                                     city == city_state[i])$female)
-    }
+  if (sex[i] == "M") {
+    age[i] <- sample(x = c(0:99),
+                     size = 1,
+                     prob = filter(age_sex_by_city,
+                                   city == city_state[i])$male)
   } else {
-    if (sex[i] == "M") {
-      age[i] <- sample(x = c(0:99),
-                       size = 1,
-                       prob = age_by_sex$male)
-    } else {
-      age[i] <- sample(x = c(0:99),
-                       size = 1,
-                       prob = age_by_sex$female)
-    }
+    age[i] <- sample(x = c(0:99),
+                     size = 1,
+                     prob = filter(age_sex_by_city,
+                                   city == city_state[i])$female)
   }
 }
 
@@ -145,6 +158,7 @@ for (i in 1:n) {
                             prob = male_names$frequency_male / sum(male_names$frequency_male))
   } else if (sex[i] == "F") {
     first_name[i] <- sample(female_names$name,
+                            size = 1,
                             prob = female_names$frequency_female / sum(female_names$frequency_female))
   }
 }
@@ -159,3 +173,21 @@ last_name <- sample(surname_list$Surname,
                     prob = surname_list$Incidence / sum(surname_list$Incidence))
 
 full_name <- paste(first_name, last_name, sep = " ")
+
+# Race
+# * Add on next commit
+# race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
+# possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")
+
+# race <- c()
+# set.seed(seed)
+# for (i in 1:n) {
+#   print(i)
+#   print(filter(race_list, city == city_state[i])[2:6])
+#   race[i] <- sample(x = possible_races,
+#                     size = 1,
+#                     prob = filter(race_list,
+#                                   city == city_state[i])[2:6])
+# }
+
+# Birth date
