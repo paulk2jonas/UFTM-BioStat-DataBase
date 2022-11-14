@@ -10,6 +10,7 @@
 #   TODO:
 #     Add friend easter eggs
 #     Remove city_index
+#     Create file with birth frequency to save time
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -25,6 +26,7 @@
 # --------------------------------- Libraries -------------------------------- #
 library(tidyverse)
 library(readxl)
+library(lubridate)
 # library(here)
 
 # --------------------------------- Variables -------------------------------- #
@@ -188,3 +190,33 @@ for (i in 1:n) {
 }
 
 # Birth date
+# This generator will skip february 29th for now
+# * Commented code for possible later use
+# load("./UFTM-BioStat-DataBase/Background_Data/births.RData")
+
+study_date <- Sys.Date()
+# possible_births <- substr(nascimento, 1, 4)
+# possible_births <- possible_births[possible_births != "0000"]
+# possible_births <- possible_births[possible_births != "2902"]
+
+load("./UFTM-BioStat-DataBase/Background_Data/birth_frequency.RData")
+
+# birth_frequency <- table(possible_births)
+
+birth <- c()
+set.seed(seed)
+for (i in 1:n) {
+  birth[i] <- sample(x = names(birth_frequency),
+                     size = 1,
+                     prob = birth_frequency)
+}
+birth <- as.Date(birth, format = "%d%m")
+for (i in 1:n) {
+  if (study_date >= birth[i]) {
+    birth[i] <- birth[i] - years(age[i])
+  } else {
+    birth[i] <- birth[i] - years(age[i] + 1)
+  }
+}
+
+# https://marcusnunes.me/posts/heatmap-os-aniversarios-mais-comuns-no-brasil/
