@@ -87,7 +87,7 @@ ages <- unique(age_sex_by_city$age)  # ! Currently not being used
 # Using pre-computed populations by sex, because computing JIT takes too long
 
 # * Not gonna delete this code right now because it was hard
-# city_state_list <- paste(city_list$city, " (", state_initials[city_list$state], ")", sep = "")
+city_state_list <- paste(city_list$city, " (", state_initials[city_list$state], ")", sep = "")
 # sex_by_city_male <- c()
 # sex_by_city_female <- c()
 # for (i in 1:length(city_state_list)) {
@@ -175,19 +175,16 @@ last_name <- sample(surname_list$Surname,
 full_name <- paste(first_name, last_name, sep = " ")
 
 # Race
-# * Add on next commit
-# race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
-# possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")
+race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
+possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")
 
-# race <- c()
-# set.seed(seed)
-# for (i in 1:n) {
-#   print(i)
-#   print(filter(race_list, city == city_state[i])[2:6])
-#   race[i] <- sample(x = possible_races,
-#                     size = 1,
-#                     prob = filter(race_list,
-#                                   city == city_state[i])[2:6])
-# }
+race <- c()
+set.seed(seed)
+for (i in 1:n) {
+  race[i] <- sample(x = possible_races,
+                    size = 1,
+                    prob = filter(race_list,
+                                  city == city_state[i])[2:6])
+}
 
 # Birth date
