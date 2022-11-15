@@ -264,3 +264,22 @@ set.seed(seed)
 for (i in 1:n) {
   chinese_sign[i] <- chinese_zodiac_list[(year(birth[i]) %% 12) + 1]
 }
+
+# Height (cm)
+
+male_height <- c("mean" = 170.8, "sd" = 6.425)
+female_height <- c("mean" = 158, "sd" = 6)
+
+height <- c()
+set.seed(seed)
+for (i in 1:n) {
+  if (sex[i] == "M") {
+    height[i] <- round(rnorm(1,
+                             mean = male_height["mean"],
+                             sd = male_height["sd"]), 1)
+  } else {
+    height[i] <- round(rnorm(1,
+                             mean = female_height["mean"],
+                             sd = female_height["sd"]), 1)
+  }
+}
