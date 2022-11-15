@@ -283,3 +283,57 @@ for (i in 1:n) {
                              sd = female_height["sd"]), 1)
   }
 }
+
+# Sport habits (which sport and time)
+# Every 0, except when age doesn't make sense, was changed to 0.0005
+
+sports_by_sex <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 1)
+sports_by_age <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 2)
+sports_time <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 3)
+
+age_separators <- c(7, 15, 20, 25, 35, 45, 55, 65, 75)
+age_group <- c()
+for (i in 1:n) {
+  if (age[i] < age_separators[1]) {
+    age_group[i] <- "0_6"
+  } else if (age_separators[1] <= age[i] && age[i] < age_separators[2]) {
+    age_group[i] <- "7_14"
+  } else if (age_separators[2] <= age[i] && age[i] < age_separators[3]) {
+    age_group[i] <- "15_19"
+  } else if (age_separators[3] <= age[i] && age[i] < age_separators[4]) {
+    age_group[i] <- "20_24"
+  } else if (age_separators[4] <= age[i] && age[i] < age_separators[5]) {
+    age_group[i] <- "25_34"
+  } else if (age_separators[5] <= age[i] && age[i] < age_separators[6]) {
+    age_group[i] <- "35_44"
+  } else if (age_separators[6] <= age[i] && age[i] < age_separators[7]) {
+    age_group[i] <- "45_54"
+  } else if (age_separators[7] <= age[i] && age[i] < age_separators[8]) {
+    age_group[i] <- "55_64"
+  } else if (age_separators[8] <= age[i] && age[i] < age_separators[9]) {
+    age_group[i] <- "65_74"
+  } else if (age_separators[9] <= age[i]) {
+    age_group[i] <- "75_above"
+  }
+}
+
+activity <- c()
+set.seed(seed)
+for (i in 1:n) {
+  activity[i] <- sample(x = sports_by_sex$sport,
+                     size = 1,
+                     prob = sports_by_sex[[sex[i]]] *
+                            sports_by_age[[age_group[i]]])
+}
+
+activity_time <- c()
+set.seed(seed)
+for (i in 1:n) {
+  if (activity[i] == "Sedentário") {
+    activity_time[i] <- NA
+  } else {
+    activity_time[i] <- round(rchisq(n = 1,
+                                     df = filter(sports_time, sport == activity[i])$degrees_of_freedom),
+                              1)
+  }
+}
