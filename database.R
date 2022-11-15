@@ -9,8 +9,7 @@
 #
 #   TODO:
 #     Add friend easter eggs
-#     Remove city_index
-#     Create file with birth frequency to save time
+#     Remove city_index and other unused variables/files
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -189,7 +188,7 @@ for (i in 1:n) {
                                   city == city_state[i])[2:6])
 }
 
-# Birth date
+# Birth date and zodiac sign
 # This generator will skip february 29th for now
 # * Commented code for possible later use
 # load("./UFTM-BioStat-DataBase/Background_Data/births.RData")
@@ -199,11 +198,26 @@ study_date <- Sys.Date()
 # possible_births <- possible_births[possible_births != "0000"]
 # possible_births <- possible_births[possible_births != "2902"]
 
+zodiac_sign_list <- list(
+  "Áries" = dmy(21032022) %--% dmy(20042022),
+  "Touro" = dmy(21042022) %--% dmy(20052022),
+  "Gêmeos" = dmy(21052022) %--% dmy(20062022),
+  "Câncer" = dmy(21062022) %--% dmy(22072022),
+  "Leão" = dmy(23072022) %--% dmy(22082022),
+  "Virgem" = dmy(23082022) %--% dmy(22092022),
+  "Libra" = dmy(23092022) %--% dmy(22102022),
+  "Escorpião" = dmy(23102022) %--% dmy(21112022),
+  "Sagitário" = dmy(22112022) %--% dmy(21122022),
+  "Aquário" = dmy(21012022) %--% dmy(19022022),
+  "Peixes" = dmy(20022022) %--% dmy(20032022)
+)
+
 load("./UFTM-BioStat-DataBase/Background_Data/birth_frequency.RData")
 
 # birth_frequency <- table(possible_births)
 
 birth <- c()
+zodiac_sign <- c()
 set.seed(seed)
 for (i in 1:n) {
   birth[i] <- sample(x = names(birth_frequency),
@@ -212,6 +226,16 @@ for (i in 1:n) {
 }
 birth <- as.Date(birth, format = "%d%m")
 for (i in 1:n) {
+  if (birth[i] %within% interval(dmy(21012022), dmy(21122022))) {
+    for (j in 1:11) {
+      if (birth[i] %within% zodiac_sign_list[j]) {
+        zodiac_sign[i] <- names(zodiac_sign_list[j])
+        break
+      }
+    }
+  } else {
+    zodiac_sign[i] <- "Capricórnio"
+  }
   if (study_date >= birth[i]) {
     birth[i] <- birth[i] - years(age[i])
   } else {
@@ -219,4 +243,24 @@ for (i in 1:n) {
   }
 }
 
-# https://marcusnunes.me/posts/heatmap-os-aniversarios-mais-comuns-no-brasil/
+# Chinese Horoscope
+# TODO: update it to be more precise (not only year, but day and month)
+
+chinese_zodiac_list <- c("Macaco",
+                         "Galo",
+                         "Cão",
+                         "Javali",
+                         "Rato",
+                         "Boi",
+                         "Tigre",
+                         "Coelho",
+                         "Dragão",
+                         "Serpente",
+                         "Cavalo",
+                         "Cabra")
+
+chinese_sign <- c()
+set.seed(seed)
+for (i in 1:n) {
+  chinese_sign[i] <- chinese_zodiac_list[(year(birth[i]) %% 12) + 1]
+}
