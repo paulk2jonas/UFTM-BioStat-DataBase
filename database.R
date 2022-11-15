@@ -10,6 +10,7 @@
 #   TODO:
 #     Add friend easter eggs
 #     Remove city_index and other unused variables/files
+#     Get a new standard deviation for adults, and creat a impacting score from sports
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -358,4 +359,59 @@ for (i in 1:n) {
 }
 
 # Weight
-# TODO: ADICIONAR LÓGICA PRA CRIANÇAS
+# It was supposed to vary with height, but I only found a complete (with all values I needed) for age. It shouldn't be too unbelievable anyway
+# ! For some reason, maybe chance, weight[19] is 8.73 when seed = 42
+# * Gonna set a minimum weight for that, but on BMI
+# probably the sd is too big
+
+boys_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 1)
+girls_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 2)
+male_weight <- c("mean" = 74.6, "sd" = 24.5)
+female_weight <- c("mean" = 65.1, "sd" = 23.1)
+
+weight <- c()
+set.seed(seed)
+for (i in 1:n) {
+  age_in_months <- floor((birth[i] %--% study_date) / months(1))
+  if (sex[i] == "M") {
+    if (age_in_months <= 240) {
+      weight[i] <- round(
+        rnorm(
+          1,
+          mean = filter(boys_weight, month == age_in_months)$mean,
+          sd = filter(boys_weight, month == age_in_months)$standard_deviation
+        ),
+        2
+      )
+    } else {
+      weight[i] <- round(
+        rnorm(
+          1,
+          mean = male_weight["mean"],
+          sd = male_weight["sd"]
+        ),
+        2
+      )
+    }
+  } else {
+    if (age_in_months <= 240) {
+      weight[i] <- round(
+        rnorm(
+          1,
+          mean = filter(boys_weight, month == age_in_months)$mean,
+          sd = filter(boys_weight, month == age_in_months)$standard_deviation
+        ),
+      2
+      )
+    } else {
+      weight[i] <- round(
+        rnorm(
+          1,
+          mean = female_weight["mean"],
+          sd = female_weight["sd"]
+        ),
+        2
+      )
+    }
+  }
+}
