@@ -266,6 +266,8 @@ for (i in 1:n) {
 }
 
 # Height (cm)
+boys_height_table <- read_excel("./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx", sheet = 1)
+girls_height_table <- read_excel("./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx", sheet = 2)
 
 male_height <- c("mean" = 170.8, "sd" = 6.425)
 female_height <- c("mean" = 158, "sd" = 6)
@@ -273,14 +275,31 @@ female_height <- c("mean" = 158, "sd" = 6)
 height <- c()
 set.seed(seed)
 for (i in 1:n) {
+  age_in_months <- floor((birth[i] %--% study_date) / months(1))
   if (sex[i] == "M") {
-    height[i] <- round(rnorm(1,
-                             mean = male_height["mean"],
-                             sd = male_height["sd"]), 1)
+    if (age_in_months <= 228) {
+      height[i] <- round(rnorm(1,
+                               mean = filter(boys_height_table,
+                                             month == age_in_months)$mean,
+                               sd = filter(boys_height_table,
+                                           month == age_in_months)$standard_deviation), 1)
+    } else {
+      height[i] <- round(rnorm(1,
+                               mean = male_height["mean"],
+                               sd = male_height["sd"]), 1)
+    }
   } else {
-    height[i] <- round(rnorm(1,
-                             mean = female_height["mean"],
-                             sd = female_height["sd"]), 1)
+    if (age_in_months <= 228) {
+      height[i] <- round(rnorm(1,
+                               mean = filter(girls_height_table,
+                                             month == age_in_months)$mean,
+                               sd = filter(girls_height_table,
+                                           month == age_in_months)$standard_deviation), 1)
+    } else {
+      height[i] <- round(rnorm(1,
+                               mean = female_height["mean"],
+                               sd = female_height["sd"]), 1)
+    }
   }
 }
 
@@ -337,3 +356,6 @@ for (i in 1:n) {
                               1)
   }
 }
+
+# Weight
+# TODO: ADICIONAR LÓGICA PRA CRIANÇAS
