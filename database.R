@@ -564,3 +564,21 @@ fracture_generator <- function(age, sex) {
 }
 
 fracture <- mapply(fracture_generator, age, sex)
+
+# Housing situation (rural/urban)
+situation_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/housing_situation_by_state.xlsx")
+
+situation_generator <- function(state, race) {
+  person_state <- state #because it was messing the filter
+  situation_chances <- filter(situation_list, state == person_state) %>%
+    select(str_to_lower(race))
+  situation <- sample(
+    c("Urbana", "Rural"),
+    size = 1,
+    prob = situation_chances[[1]]
+  )
+  return(situation)
+}
+
+situation <- mapply(situation_generator, state, race)
+
