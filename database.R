@@ -361,17 +361,13 @@ for (i in 1:n) {
 
 # Weight
 # It was supposed to vary with height, but I only found a complete (with all values I needed) for age. It shouldn't be too unbelievable anyway
-# ! For some reason, maybe chance, weight[19] is 8.73 when seed = 42
-# * Gonna set a minimum weight for that, but on BMI - set min at 14
-# Or change the distribution to an chi-square...
-# probably the sd is too big
 
 boys_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 1)
 girls_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 2)
 # male_weight <- c("mean" = 74.6, "sd" = 24.5)
 # female_weight <- c("mean" = 65.1, "sd" = 23.1)
 
-weight_generator <- function(sex, birth) {
+weight_generator <- function(sex, birth, activity_time) {
   male <- c("mean" = 74.6, "sd" = 24.5)
   female <- c("mean" = 65.1, "sd" = 23.1)
   age_in_months <- floor((birth %--% study_date) / months(1))
@@ -403,11 +399,15 @@ weight_generator <- function(sex, birth) {
 
     }
   }
+  if (!is.na(activity_time)) {
+    weight <- weight - activity_time / 2
+  }
+
   weight <- round(weight, 2)
   return(weight)
 }
 
-weight <- mapply(weight_generator, sex, birth)
+weight <- mapply(weight_generator, sex, birth, activity_time)
 
 # weight <- c()
 # set.seed(seed)
@@ -518,3 +518,4 @@ eye_color <- sample(
   replace = TRUE,
   prob = eye_color_distribution
 )
+
