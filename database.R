@@ -519,3 +519,48 @@ eye_color <- sample(
   prob = eye_color_distribution
 )
 
+# ! BF% and MM% will be implemented after I fix the weight values
+
+# Fractures
+fracture_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/fractures.xlsx")
+
+fracture_generator <- function(age, sex) {
+  if (age <= 4) {
+    column <- age + 2
+  } else if (age <= 12) {
+    column <- 7    
+  } else if (age <= 17) {
+    if (sex == "M") {
+      column <- 8
+    } else if (sex == "F") {
+      column <- 9
+    }
+  } else if (age > 17) {
+    if (sex == "M") {
+      column <- 10
+    } else if (sex == "F") {
+      column <- 11
+    }
+  }
+
+  # ! make this into a function
+  fractures <- c()
+  for (row in seq_len(nrow(fracture_list))) {
+    fractures[row] <- sample(
+      x = c(TRUE, FALSE),
+      size = 1,
+      prob = c(
+        fracture_list[row, column],
+        1 - fracture_list[row, column]
+      )
+    )
+  }
+
+  places <- fracture_list[[1]]
+  fracture <- paste(places[fractures], sep = ", ")
+  # if (fracture == []) fracture <- NA
+  # !Fix It's returning an empty list if no fractures were selected
+  return(fracture)
+}
+
+fracture <- mapply(fracture_generator, age, sex)
