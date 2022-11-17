@@ -361,57 +361,105 @@ for (i in 1:n) {
 # Weight
 # It was supposed to vary with height, but I only found a complete (with all values I needed) for age. It shouldn't be too unbelievable anyway
 # ! For some reason, maybe chance, weight[19] is 8.73 when seed = 42
-# * Gonna set a minimum weight for that, but on BMI
+# * Gonna set a minimum weight for that, but on BMI - set min at 14
+# Or change the distribution to an chi-square...
 # probably the sd is too big
 
 boys_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 1)
 girls_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 2)
-male_weight <- c("mean" = 74.6, "sd" = 24.5)
-female_weight <- c("mean" = 65.1, "sd" = 23.1)
+# male_weight <- c("mean" = 74.6, "sd" = 24.5)
+# female_weight <- c("mean" = 65.1, "sd" = 23.1)
 
-weight <- c()
-set.seed(seed)
-for (i in 1:n) {
-  age_in_months <- floor((birth[i] %--% study_date) / months(1))
-  if (sex[i] == "M") {
-    if (age_in_months <= 240) {
-      weight[i] <- round(
-        rnorm(
-          1,
-          mean = filter(boys_weight, month == age_in_months)$mean,
-          sd = filter(boys_weight, month == age_in_months)$standard_deviation
-        ),
-        2
+weight_generator <- function(sex, birth) {
+  male <- c("mean" = 74.6, "sd" = 24.5)
+  female <- c("mean" = 65.1, "sd" = 23.1)
+  age_in_months <- floor((birth %--% study_date) / months(1))
+
+  if (age_in_months <= 240) {
+    if (sex == "M") {
+      weight <- rnorm(
+        1,
+        mean = filter(boys_weight, month == age_in_months)$mean,
+        sd = filter(boys_weight, month == age_in_months)$standard_deviation
       )
-    } else {
-      weight[i] <- round(
-        rnorm(
-          1,
-          mean = male_weight["mean"],
-          sd = male_weight["sd"]
-        ),
-        2
+    } else if (sex == "F") {
+      weight <- rnorm(
+        1,
+        mean = filter(girls_weight, month == age_in_months)$mean,
+        sd = filter(girls_weight, month == age_in_months)$standard_deviation
       )
     }
   } else {
-    if (age_in_months <= 240) {
-      weight[i] <- round(
-        rnorm(
-          1,
-          mean = filter(boys_weight, month == age_in_months)$mean,
-          sd = filter(boys_weight, month == age_in_months)$standard_deviation
-        ),
-      2
-      )
-    } else {
-      weight[i] <- round(
-        rnorm(
-          1,
-          mean = female_weight["mean"],
-          sd = female_weight["sd"]
-        ),
-        2
-      )
+    weight <- rchisq(n = 1, df = 3)
+    add <- function(mean, sd, weight) {
+      add <- mean + ((weight - 1) * sd)
+      return(add)
+    }
+    if (sex == "M") {
+      weight <- weight + add(male["mean"], male["sd"], weight = weight)
+    } else if (sex == "F") {
+      weight <- weight + add(female["mean"], female["sd"], weight = weight)
+
     }
   }
+  weight <- round(weight, 2)
+  return(weight)
 }
+
+weight <- mapply(weight_generator, sex, birth)
+
+# weight <- c()
+# set.seed(seed)
+# for (i in 1:n) {
+#   age_in_months <- floor((birth[i] %--% study_date) / months(1))
+#   if (sex[i] == "M") {
+#     if (age_in_months <= 240) {
+#       weight[i] <- round(
+#         rnorm(
+#           1,
+#           mean = filter(boys_weight, month == age_in_months)$mean,
+#           sd = filter(boys_weight, month == age_in_months)$standard_deviation
+#         ),
+#         2
+#       )
+#     } else {
+#       weight[i] <- round(
+#         rnorm(
+#           1,
+#           mean = male_weight["mean"],
+#           sd = male_weight["sd"]
+#         ),
+#         2
+#       )
+#     }
+#   } else {
+#     if (age_in_months <= 240) {
+#       weight[i] <- round(
+#         rnorm(
+#           1,
+#           mean = filter(boys_weight, month == age_in_months)$mean,
+#           sd = filter(boys_weight, month == age_in_months)$standard_deviation
+#         ),
+#       2
+#       )
+#     } else {
+#       weight[i] <- round(
+#         rnorm(
+#           1,
+#           mean = female_weight["mean"],
+#           sd = female_weight["sd"]
+#         ),
+#         2
+#       )
+#     }
+#   }
+# }
+
+# BMI
+
+bmi_calc <- function(weight, height) {
+  bmi <- weight / (height / 100) ** 2
+  return(round(bmi, 2))
+}
+
+bmi <- mapply(bmi_calc, weight, height)
