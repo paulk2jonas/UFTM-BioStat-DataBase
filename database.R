@@ -569,11 +569,11 @@ fracture <- mapply(fracture_generator, age, sex)
 situation_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/housing_situation_by_state.xlsx")
 
 situation_generator <- function(state, race) {
-  person_state <- state #because it was messing the filter
+  person_state <- state  # ! because it was messing the filter
   situation_chances <- filter(situation_list, state == person_state) %>%
     select(str_to_lower(race))
   situation <- sample(
-    c("Urbana", "Rural"),
+    x = c("Urbana", "Rural"),
     size = 1,
     prob = situation_chances[[1]]
   )
@@ -581,4 +581,38 @@ situation_generator <- function(state, race) {
 }
 
 situation <- mapply(situation_generator, state, race)
+
+# Shchooling
+reading_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/reading_by_age_situation_state.xlsx")
+
+reading_generator <- function(state, situation, age, race) {
+  person_state <- state
+  person_situation <- situation
+  person_age <- age
+  if (person_age < 5) return("N")
+  if (race == "Branco") {
+    columns <- 4:5
+  } else if (race == "Preto") {
+    columns  <- 6:7
+  } else if (race == "Amarelo") {
+    columns <- 8:9
+  } else if (race == "Pardo") {
+    columns <- 10:11
+  } else if (race == "Indígena") {
+    columns <- 12:13
+  }
+  reading_chances <- filter(reading_list, state == person_state) %>%
+    filter(situation == person_situation) %>%
+      filter(age == person_age) %>%
+        select(all_of(columns))
+  reading <- sample(
+    x = c("Y", "N"),
+    size = 1,
+    prob = reading_chances
+  )
+  return(reading)
+}
+
+reading <- mapply(reading_generator, state, situation, age, race)
+# TODO: add schooling levels, because I FORGOT TO GET THIS DATA
 
