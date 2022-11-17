@@ -507,3 +507,14 @@ hair_color_generator <- function(race, age) {
 }
 
 hair_color <- mapply(hair_color_generator, race, age)
+
+# Eye color
+eye_color_list <- c("Castanho", "Azul", "Âmbar", "Verde")
+eye_color_distribution <- c(45, 27, 18, 9)
+
+eye_color <- sample(
+  eye_color_list,
+  size = n,
+  replace = TRUE,
+  prob = eye_color_distribution
+)
