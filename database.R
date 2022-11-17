@@ -178,7 +178,8 @@ full_name <- paste(first_name, last_name, sep = " ")
 
 # Race
 race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
-possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")
+possible_races <- c("Branco", "Preto", "Amarelo", "Pardo", "Indígena")
+# possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")  IN ENGLISH
 
 race <- c()
 set.seed(seed)
@@ -456,10 +457,53 @@ weight <- mapply(weight_generator, sex, birth)
 # }
 
 # BMI
-
 bmi_calc <- function(weight, height) {
   bmi <- weight / (height / 100) ** 2
   return(round(bmi, 2))
 }
 
 bmi <- mapply(bmi_calc, weight, height)
+
+# Hair color
+hair_color_list <- c(
+  "Loiro comum",
+  "Castanho claro",
+  "Castanho médio",
+  "Castanho escuro",
+  "Castanho-ruivo",
+  "Ruivo",
+  "Preto",
+  "Grisalho",
+  "Branco"
+)
+
+hair_color_generator <- function(race, age) {
+  if (race == possible_races[1]) {
+    race_hair_chance <- c(rep(1, 9))
+  } else if (race == possible_races[2]) {
+    race_hair_chance <- c(.5, 1, 1, 1, .5, .5, 1, 1, 1)
+  } else if (race == possible_races[3]) {
+    race_hair_chance <- c(.2, .2, .2, .5, .2, .2, 1, 1, 1)
+  } else if (race == possible_races[4]) {
+    race_hair_chance <- c(.8, 1, 1, 1, .8, .8, 1, 1, 1)
+  } else if (race == possible_races[5]) {
+    race_hair_chance <- c(.2, .2, .2, .5, .2, .2, 1, 1, 1)
+  }
+  if (age < 20) {
+    age_hair_chance <- c(rep(1, 7), rep(0, 2))
+  } else if (20 <= age && age < 50) {
+    color_chance <- (-5 * age + 400) / 3
+    white_chance <- (5 * age - 5) / 3
+    age_hair_chance <- c(rep(color_chance, 7), rep(white_chance, 2))
+  } else if (50 <= age && age < 75) {
+    color_chance <- -2 * age + 150
+    white_chance <- 2 * age - 50
+    age_hair_chance <- c(rep(color_chance, 7), rep(white_chance, 2))
+  } else if (75 <= age) {
+    age_hair_chance <- c(rep(0, 7), rep(1, 2))
+  }
+  hair_color <- sample(hair_color_list, size = 1, prob = race_hair_chance * age_hair_chance)
+  return(hair_color)
+}
+
+hair_color <- mapply(hair_color_generator, race, age)
