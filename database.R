@@ -10,7 +10,7 @@
 #   TODO:
 #     Add friend easter eggs
 #     Remove city_index and other unused variables/files
-#     Get a new standard deviation for adults, and creat a impacting score from sports
+#     Get a new standard deviation for adults, and create a impacting score from sports
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -24,182 +24,91 @@
 # ============================================================================ #
 
 # --------------------------------- Libraries -------------------------------- #
-library(tidyverse)
-library(readxl)
-library(lubridate)
-# library(here)
+if (!require(tidyverse)) {
+  install.packages("tidyverse")
+  library(tidyverse)
+}
+if (!require(readxl)) {
+  install.packages("readxl")
+  library(readxl)
+}
+if (!require(lubridate)) {
+  install.packages("lubridate")
+  library(lubridate)
+}
+
+# ---------------------------------- Sources --------------------------------- #
+source("./UFTM-BioStat-DataBase/personal_info_engine.R")
 
 # --------------------------------- Variables -------------------------------- #
 n <- 1000
 seed <- 42
+seed_list <- seed_generator(n, seed)
+language <- "pt"
 
-city_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/cities.xlsx")
-city_list$population <- as.numeric(city_list$population)
+
+# ---------------------------------------------------------------------------- #
+#                           Data Loading and Managing                          #
+# ---------------------------------------------------------------------------- #
+
+# --------------------------------- Residence -------------------------------- #
+city_list <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/cities.xlsx",
+  col_types = c("text", "text", "numeric")
+)
 # To save on processing power later on
 city_list_total_pop <- sum(city_list$population)
 
-city <- c()
-state <- c()
-# Because, otherwise, I can't get the cities to match withe their states
-# seq_len used because the lint warned about a possible edge case
-set.seed(seed)
-city_index <- sample(x = seq_len(nrow(city_list)),
-                     size = n,
-                     replace = TRUE,
-                     prob = city_list$population / city_list_total_pop)
-for (i in 1:n) {
-  city[i] <- city_list$city[city_index[i]]
-  state[i] <- city_list$state[city_index[i]]
-}
+state_initials <- c(
+  "Acre" = "AC",
+  "Alagoas" = "AL",
+  "Amapá" = "AP",
+  "Amazonas" = "AM",
+  "Bahia" = "BA",
+  "Ceará" = "CE",
+  "Espírito Santo" = "ES",
+  "Goiás" = "GO",
+  "Maranhão" = "MA",
+  "Mato Grosso" = "MT",
+  "Mato Grosso do Sul" = "MS",
+  "Minas Gerais" = "MG",
+  "Pará" = "PA",
+  "Paraíba" = "PB",
+  "Paraná" = "PR",
+  "Pernambuco" = "PE",
+  "Piauí" = "PI",
+  "Rio de Janeiro" = "RJ",
+  "Rio Grande do Norte" = "RN",
+  "Rio Grande do Sul" = "RS",
+  "Rondônia" = "RO",
+  "Roraima" = "RR",
+  "Santa Catarina" = "SC",
+  "São Paulo" = "SP",
+  "Sergipe" = "SE",
+  "Tocantins" = "TO",
+  "Distrito Federal" = "DF"
+)
 
-state_initials <- c("Acre" = "AC",
-                    "Alagoas" = "AL",
-                    "Amapá" = "AP",
-                    "Amazonas" = "AM",
-                    "Bahia" = "BA",
-                    "Ceará" = "CE",
-                    "Espírito Santo" = "ES",
-                    "Goiás" = "GO",
-                    "Maranhão" = "MA",
-                    "Mato Grosso" = "MT",
-                    "Mato Grosso do Sul" = "MS",
-                    "Minas Gerais" = "MG",
-                    "Pará" = "PA",
-                    "Paraíba" = "PB",
-                    "Paraná" = "PR",
-                    "Pernambuco" = "PE",
-                    "Piauí" = "PI",
-                    "Rio de Janeiro" = "RJ",
-                    "Rio Grande do Norte" = "RN",
-                    "Rio Grande do Sul" = "RS",
-                    "Rondônia" = "RO",
-                    "Roraima" = "RR",
-                    "Santa Catarina" = "SC",
-                    "São Paulo" = "SP",
-                    "Sergipe" = "SE",
-                    "Tocantins" = "TO",
-                    "Distrito Federal" = "DF")
+# ------------------------- Sex, Gender and Sexuality ------------------------ #
+# Made by me
+sex_by_city <- read.csv(
+  "./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv"
+)
 
-city_state <- paste(city, " (", state_initials[state], ")", sep = "")
-
-age_sex_by_city <- read_excel("./UFTM-BioStat-DataBase/Background_Data/age.xlsx")
-cities <- unique(age_sex_by_city$city)
-ages <- unique(age_sex_by_city$age)  # ! Currently not being used
-
-# Using pre-computed populations by sex, because computing JIT takes too long
-
-# * Not gonna delete this code right now because it was hard
-city_state_list <- paste(city_list$city, " (", state_initials[city_list$state], ")", sep = "")
-# sex_by_city_male <- c()
-# sex_by_city_female <- c()
-# for (i in 1:length(city_state_list)) {
-#   sex_by_city_male[i] <- sum(filter(age_sex_by_city,
-#                                     city == city_state_list[i])$male)
-#   sex_by_city_female[i] <- sum(filter(age_sex_by_city,
-#                                     city == city_state_list[i])$female)
-# }
-# tail(data.frame("city" = city_state_list,
-#                 "male" = sex_by_city_male,
-#                 "female" = sex_by_city_female))
-# nrow(data.frame("city" = city_state_list,
-#                 "male" = sex_by_city_male,
-#                 "female" = sex_by_city_female))
-# sex_by_city <- data.frame("city" = city_state_list,
-#                 "male" = sex_by_city_male,
-#                 "female" = sex_by_city_female)
-# write_csv(sex_by_city, file = "./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv")
-
-sex_by_city <- read.csv("./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv")
-
-sex <- c()
-set.seed(seed)
-for (i in 1:n) {
-  sex[i] <- sample(x = c("M", "F"),
-                   size = 1,
-                   prob = c(filter(sex_by_city,
-                                   city == city_state[i])$male,
-                            filter(sex_by_city,
-                                   city == city_state[i])$female))
-}
-
-# Using pre-computed values for the same reason
-# age_by_sex <- read.csv("./UFTM-BioStat-DataBase/Background_Data/age_by_sex.csv")
-# ! Not used anymore, delete both the code and the file later
-
-age <- c()
-set.seed(seed)
-for (i in 1:n) {
-  if (sex[i] == "M") {
-    age[i] <- sample(x = c(0:99),
-                     size = 1,
-                     prob = filter(age_sex_by_city,
-                                   city == city_state[i])$male)
-  } else {
-    age[i] <- sample(x = c(0:99),
-                     size = 1,
-                     prob = filter(age_sex_by_city,
-                                   city == city_state[i])$female)
-  }
-}
-
-forename_list <- read.csv("./UFTM-BioStat-DataBase/Background_Data/first_name.csv") %>%
-  select(1:4)
-
-# ? Use all sex possibilities for each name?
-male_names <- filter(forename_list, classification == "M") %>%
-  select(-c(2:3))
-female_names <- filter(forename_list, classification == "F") %>%
-  select(-c(2, 4))
-
-first_name <- c()
-set.seed(seed)
-for (i in 1:n) {
-  if (sex[i] == "M") {
-    first_name[i] <- sample(male_names$name,
-                            size = 1,
-                            prob = male_names$frequency_male / sum(male_names$frequency_male))
-  } else if (sex[i] == "F") {
-    first_name[i] <- sample(female_names$name,
-                            size = 1,
-                            prob = female_names$frequency_female / sum(female_names$frequency_female))
-  }
-}
-first_name <- str_to_title(first_name)
-
-surname_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/last_name.xlsx")
-
-set.seed(seed)
-last_name <- sample(surname_list$Surname,
-                    size = n,
-                    replace = TRUE,
-                    prob = surname_list$Incidence / sum(surname_list$Incidence))
-
-full_name <- paste(first_name, last_name, sep = " ")
-
-# Race
-race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
-possible_races <- c("Branco", "Preto", "Amarelo", "Pardo", "Indígena")
-# possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")  IN ENGLISH
-
-race <- c()
-set.seed(seed)
-for (i in 1:n) {
-  race[i] <- sample(x = possible_races,
-                    size = 1,
-                    prob = filter(race_list,
-                                  city == city_state[i])[2:6])
-}
-
-# Birth date and zodiac sign
-# This generator will skip february 29th for now
-# * Commented code for possible later use
-# load("./UFTM-BioStat-DataBase/Background_Data/births.RData")
-
+# ------------------------------- Age and Birth ------------------------------ #
 study_date <- Sys.Date()
-# possible_births <- substr(nascimento, 1, 4)
-# possible_births <- possible_births[possible_births != "0000"]
-# possible_births <- possible_births[possible_births != "2902"]
 
+# Age
+age_sex_by_city <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/age.xlsx"
+)
+
+age_range <- 0:99
+
+# Birth
+load("./UFTM-BioStat-DataBase/Background_Data/birth_frequency.RData")
+
+# Zodiac Sign
 zodiac_sign_list <- list(
   "Áries" = dmy(21032022) %--% dmy(20042022),
   "Touro" = dmy(21042022) %--% dmy(20052022),
@@ -214,257 +123,44 @@ zodiac_sign_list <- list(
   "Peixes" = dmy(20022022) %--% dmy(20032022)
 )
 
-load("./UFTM-BioStat-DataBase/Background_Data/birth_frequency.RData")
+# Chinese sign
+chinese_sign_list <- c(
+  "Macaco",
+  "Galo",
+  "Cão",
+  "Javali",
+  "Rato",
+  "Boi",
+  "Tigre",
+  "Coelho",
+  "Dragão",
+  "Serpente",
+  "Cavalo",
+  "Cabra"
+)
 
-# birth_frequency <- table(possible_births)
+# ----------------------------------- Name ----------------------------------- #
+# First Name
+forename_list <- read.csv(
+  "./UFTM-BioStat-DataBase/Background_Data/first_name.csv"
+) %>%
+  select(1:4)
 
-birth <- c()
-zodiac_sign <- c()
-set.seed(seed)
-for (i in 1:n) {
-  birth[i] <- sample(x = names(birth_frequency),
-                     size = 1,
-                     prob = birth_frequency)
-}
-birth <- as.Date(birth, format = "%d%m")
-for (i in 1:n) {
-  if (birth[i] %within% interval(dmy(21012022), dmy(21122022))) {
-    for (j in 1:11) {
-      if (birth[i] %within% zodiac_sign_list[j]) {
-        zodiac_sign[i] <- names(zodiac_sign_list[j])
-        break
-      }
-    }
-  } else {
-    zodiac_sign[i] <- "Capricórnio"
-  }
-  if (study_date >= birth[i]) {
-    birth[i] <- birth[i] - years(age[i])
-  } else {
-    birth[i] <- birth[i] - years(age[i] + 1)
-  }
-}
+name_filter <- FALSE
 
-# Chinese Horoscope
-# TODO: update it to be more precise (not only year, but day and month)
+# Last Name
+surname_list <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/last_name.xlsx"
+)
 
-chinese_zodiac_list <- c("Macaco",
-                         "Galo",
-                         "Cão",
-                         "Javali",
-                         "Rato",
-                         "Boi",
-                         "Tigre",
-                         "Coelho",
-                         "Dragão",
-                         "Serpente",
-                         "Cavalo",
-                         "Cabra")
-
-chinese_sign <- c()
-set.seed(seed)
-for (i in 1:n) {
-  chinese_sign[i] <- chinese_zodiac_list[(year(birth[i]) %% 12) + 1]
+# ------------------------- Race, Hair and Eye Color ------------------------- #
+race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
+if (language == "pt") {
+  possible_races <- c("Branco", "Preto", "Amarelo", "Pardo",  "Indígena")
+} else if (language == "en") {
+  possible_races <- c("White", "Black", "Asian", "Multiracial", "Indigenous")
 }
 
-# Height (cm)
-boys_height_table <- read_excel("./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx", sheet = 1)
-girls_height_table <- read_excel("./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx", sheet = 2)
-
-male_height <- c("mean" = 170.8, "sd" = 6.425)
-female_height <- c("mean" = 158, "sd" = 6)
-
-height <- c()
-set.seed(seed)
-for (i in 1:n) {
-  age_in_months <- floor((birth[i] %--% study_date) / months(1))
-  if (sex[i] == "M") {
-    if (age_in_months <= 228) {
-      height[i] <- round(rnorm(1,
-                               mean = filter(boys_height_table,
-                                             month == age_in_months)$mean,
-                               sd = filter(boys_height_table,
-                                           month == age_in_months)$standard_deviation), 1)
-    } else {
-      height[i] <- round(rnorm(1,
-                               mean = male_height["mean"],
-                               sd = male_height["sd"]), 1)
-    }
-  } else {
-    if (age_in_months <= 228) {
-      height[i] <- round(rnorm(1,
-                               mean = filter(girls_height_table,
-                                             month == age_in_months)$mean,
-                               sd = filter(girls_height_table,
-                                           month == age_in_months)$standard_deviation), 1)
-    } else {
-      height[i] <- round(rnorm(1,
-                               mean = female_height["mean"],
-                               sd = female_height["sd"]), 1)
-    }
-  }
-}
-
-# Sport habits (which sport and time)
-# Every 0, except when age doesn't make sense, was changed to 0.0005
-
-sports_by_sex <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 1)
-sports_by_age <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 2)
-sports_time <- read_excel("./UFTM-BioStat-DataBase/Background_Data/sports.xlsx", sheet = 3)
-
-age_separators <- c(7, 15, 20, 25, 35, 45, 55, 65, 75)
-age_group <- c()
-for (i in 1:n) {
-  if (age[i] < age_separators[1]) {
-    age_group[i] <- "0_6"
-  } else if (age_separators[1] <= age[i] && age[i] < age_separators[2]) {
-    age_group[i] <- "7_14"
-  } else if (age_separators[2] <= age[i] && age[i] < age_separators[3]) {
-    age_group[i] <- "15_19"
-  } else if (age_separators[3] <= age[i] && age[i] < age_separators[4]) {
-    age_group[i] <- "20_24"
-  } else if (age_separators[4] <= age[i] && age[i] < age_separators[5]) {
-    age_group[i] <- "25_34"
-  } else if (age_separators[5] <= age[i] && age[i] < age_separators[6]) {
-    age_group[i] <- "35_44"
-  } else if (age_separators[6] <= age[i] && age[i] < age_separators[7]) {
-    age_group[i] <- "45_54"
-  } else if (age_separators[7] <= age[i] && age[i] < age_separators[8]) {
-    age_group[i] <- "55_64"
-  } else if (age_separators[8] <= age[i] && age[i] < age_separators[9]) {
-    age_group[i] <- "65_74"
-  } else if (age_separators[9] <= age[i]) {
-    age_group[i] <- "75_above"
-  }
-}
-
-activity <- c()
-set.seed(seed)
-for (i in 1:n) {
-  activity[i] <- sample(x = sports_by_sex$sport,
-                     size = 1,
-                     prob = sports_by_sex[[sex[i]]] *
-                            sports_by_age[[age_group[i]]])
-}
-
-activity_time <- c()
-set.seed(seed)
-for (i in 1:n) {
-  if (activity[i] == "Sedentário") {
-    activity_time[i] <- NA
-  } else {
-    activity_time[i] <- round(rchisq(n = 1,
-                                     df = filter(sports_time, sport == activity[i])$degrees_of_freedom),
-                              1)
-  }
-}
-
-# Weight
-# It was supposed to vary with height, but I only found a complete (with all values I needed) for age. It shouldn't be too unbelievable anyway
-
-boys_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 1)
-girls_weight <- read_excel("./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx", sheet = 2)
-# male_weight <- c("mean" = 74.6, "sd" = 24.5)
-# female_weight <- c("mean" = 65.1, "sd" = 23.1)
-
-weight_generator <- function(sex, birth, activity_time) {
-  male <- c("mean" = 74.6, "sd" = 24.5)
-  female <- c("mean" = 65.1, "sd" = 23.1)
-  age_in_months <- floor((birth %--% study_date) / months(1))
-
-  if (age_in_months <= 240) {
-    if (sex == "M") {
-      weight <- rnorm(
-        1,
-        mean = filter(boys_weight, month == age_in_months)$mean,
-        sd = filter(boys_weight, month == age_in_months)$standard_deviation
-      )
-    } else if (sex == "F") {
-      weight <- rnorm(
-        1,
-        mean = filter(girls_weight, month == age_in_months)$mean,
-        sd = filter(girls_weight, month == age_in_months)$standard_deviation
-      )
-    }
-  } else {
-    weight <- rchisq(n = 1, df = 3)
-    add <- function(mean, sd, weight) {
-      add <- mean + ((weight - 1) * sd)
-      return(add)
-    }
-    if (sex == "M") {
-      weight <- weight + add(male["mean"], male["sd"], weight = weight)
-    } else if (sex == "F") {
-      weight <- weight + add(female["mean"], female["sd"], weight = weight)
-
-    }
-  }
-  if (!is.na(activity_time)) {
-    weight <- weight - activity_time / 2
-  }
-
-  weight <- round(weight, 2)
-  return(weight)
-}
-
-weight <- mapply(weight_generator, sex, birth, activity_time)
-
-# weight <- c()
-# set.seed(seed)
-# for (i in 1:n) {
-#   age_in_months <- floor((birth[i] %--% study_date) / months(1))
-#   if (sex[i] == "M") {
-#     if (age_in_months <= 240) {
-#       weight[i] <- round(
-#         rnorm(
-#           1,
-#           mean = filter(boys_weight, month == age_in_months)$mean,
-#           sd = filter(boys_weight, month == age_in_months)$standard_deviation
-#         ),
-#         2
-#       )
-#     } else {
-#       weight[i] <- round(
-#         rnorm(
-#           1,
-#           mean = male_weight["mean"],
-#           sd = male_weight["sd"]
-#         ),
-#         2
-#       )
-#     }
-#   } else {
-#     if (age_in_months <= 240) {
-#       weight[i] <- round(
-#         rnorm(
-#           1,
-#           mean = filter(boys_weight, month == age_in_months)$mean,
-#           sd = filter(boys_weight, month == age_in_months)$standard_deviation
-#         ),
-#       2
-#       )
-#     } else {
-#       weight[i] <- round(
-#         rnorm(
-#           1,
-#           mean = female_weight["mean"],
-#           sd = female_weight["sd"]
-#         ),
-#         2
-#       )
-#     }
-#   }
-# }
-
-# BMI
-bmi_calc <- function(weight, height) {
-  bmi <- weight / (height / 100) ** 2
-  return(round(bmi, 2))
-}
-
-bmi <- mapply(bmi_calc, weight, height)
-
-# Hair color
 hair_color_list <- c(
   "Loiro comum",
   "Castanho claro",
@@ -477,142 +173,169 @@ hair_color_list <- c(
   "Branco"
 )
 
-hair_color_generator <- function(race, age) {
-  if (race == possible_races[1]) {
-    race_hair_chance <- c(rep(1, 9))
-  } else if (race == possible_races[2]) {
-    race_hair_chance <- c(.5, 1, 1, 1, .5, .5, 1, 1, 1)
-  } else if (race == possible_races[3]) {
-    race_hair_chance <- c(.2, .2, .2, .5, .2, .2, 1, 1, 1)
-  } else if (race == possible_races[4]) {
-    race_hair_chance <- c(.8, 1, 1, 1, .8, .8, 1, 1, 1)
-  } else if (race == possible_races[5]) {
-    race_hair_chance <- c(.2, .2, .2, .5, .2, .2, 1, 1, 1)
-  }
-  if (age < 20) {
-    age_hair_chance <- c(rep(1, 7), rep(0, 2))
-  } else if (20 <= age && age < 50) {
-    color_chance <- (-5 * age + 400) / 3
-    white_chance <- (5 * age - 5) / 3
-    age_hair_chance <- c(rep(color_chance, 7), rep(white_chance, 2))
-  } else if (50 <= age && age < 75) {
-    color_chance <- -2 * age + 150
-    white_chance <- 2 * age - 50
-    age_hair_chance <- c(rep(color_chance, 7), rep(white_chance, 2))
-  } else if (75 <= age) {
-    age_hair_chance <- c(rep(0, 7), rep(1, 2))
-  }
-  hair_color <- sample(hair_color_list, size = 1, prob = race_hair_chance * age_hair_chance)
-  return(hair_color)
-}
-
-hair_color <- mapply(hair_color_generator, race, age)
-
-# Eye color
 eye_color_list <- c("Castanho", "Azul", "Âmbar", "Verde")
 eye_color_distribution <- c(45, 27, 18, 9)
 
-eye_color <- sample(
-  eye_color_list,
-  size = n,
-  replace = TRUE,
-  prob = eye_color_distribution
+# -------------------------------- Height (cm) ------------------------------- #
+boys_height_table <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx",
+  sheet = 1
 )
+girls_height_table <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx",
+  sheet = 2
+)
+
+male_height <- c("mean" = 170.8, "sd" = 6.425)
+female_height <- c("mean" = 158, "sd" = 6)
+
+# ---------------------- Sports and Physical Activities ---------------------- #
+# Sports
+# Every 0, except when age doesn't make sense, was changed to 0.0005
+sports_by_sex <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  sheet = 1
+)
+sports_by_age <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  sheet = 2
+)
+# Weekly sports time (h)
+sports_time <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  sheet = 3
+)
+
+age_groups <- list(
+  "0_6" = 0:6,
+  "7_14" = 7:14,
+  "15_19" = 15:19,
+  "20_24" = 20:24,
+  "25_34" = 25:34,
+  "35_44" = 35:44,
+  "45_54" = 45:54,
+  "55_64" = 55:64,
+  "65_74" = 65:74,
+  "75_above" = 75:100
+)
+
+# ------------------------- Weight, BMI, BF% and MM% ------------------------- #
+# Weight (kg)
+boys_weight <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx",
+  sheet = 1
+)
+girls_weight <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx",
+  sheet = 2
+)
+
+male_weight <- c("mean" = 74.6, "sd" = 24.5)
+female_weight <- c("mean" = 65.1, "sd" = 23.1)
+
+# ! BF% and MM% will be implemented after I fix the weight values,
+
+# --------------------------------- Fractures -------------------------------- #
+fracture_list <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/fractures.xlsx"
+)
+
+# ---------------------------- Residence Situation --------------------------- #
+situation_list <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/housing_situation_by_state.xlsx"
+)
+
+# ----------------------- Alphabetization and Schooling ---------------------- #
+# Alphabetization
+reading_list <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/reading_by_age_situation_state.xlsx"
+)
+
+
+# ---------------------------------------------------------------------------- #
+#                                Data Generation                               #
+# ---------------------------------------------------------------------------- #
+
+# --------------------------------- Residence -------------------------------- #
+city <- city_generator(n, seed, city_list)
+state <- state_generator(n, seed, city_list)
+
+city_state <- paste(city, " (", state_initials[state], ")", sep = "")
+
+# ------------------------- Sex, Gender and Sexuality ------------------------ #
+# Sex
+sex <- mapply(sex_generator, seed_list, city_state)
+
+# ------------------------------- Age and Birth ------------------------------ #
+# Age
+# This generator will skip february 29th for now
+age <- mapply(age_generator, seed_list, city_state, sex)
+
+birth <- mapply(birthday_generator, seed_list, SIMPLIFY = FALSE)
+birth <- reduce(birth, c)
+
+# Zodiac Sign
+zodiac_sign <- mapply(zodiac_sign_generator, birth)
+
+# Birth
+# Remaking it because it seems I need to
+# Maybe I'll find another way later
+birth <- mapply(birth_date_generator, birth, age, SIMPLIFY = FALSE)
+birth <- reduce(birth, c)
+
+# Chinese Horoscope
+# TODO: update it to be more precise (not only year, but day and month)
+chinese_sign <- chinese_sign_generator(birth)
+
+# ----------------------------------- Name ----------------------------------- #
+# First Name
+if (name_filter) {
+  first_name <- mapply(filter_name_generator, seed_list, sex)
+} else {
+  first_name <- mapply(unfilter_name_generator, seed_list, sex)
+}
+# Last Name
+last_name <- mapply(last_name_generator, seed_list)
+# Full Name
+full_name <- paste(first_name, last_name, sep = " ")
+
+# ------------------------- Race, Hair and Eye Color ------------------------- #
+# Race
+race <- mapply(race_generator, seed_list, city_state)
+# Hair Color
+hair_color <- mapply(hair_color_generator, race, age, seed_list)
+# Eye Color
+eye_color <- eye_color_generator(seed, eye_color_list, eye_color_distribution)
+
+# -------------------------------- Height (cm) ------------------------------- #
+height <- mapply(height_generator, seed_list, birth, study_date, sex)
+
+# ---------------------- Sports and Physical Activities ---------------------- #
+# Sports
+activity <- mapply(activity_generator, age, sex, seed_list)
+# Weekly sports time (h)
+activity_time <- mapply(activity_time_generator, activity, seed_list)
+
+# ------------------------- Weight, BMI, BF% and MM% ------------------------- #
+# ! Still need to tune the values on the funcion. Too many big weights
+# Weight (kg)
+weight <- mapply(weight_generator, sex, birth, activity_time, seed_list)
+
+# BMI
+bmi <- mapply(bmi_calc, weight, height)
 
 # ! BF% and MM% will be implemented after I fix the weight values
 
-# Fractures
-fracture_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/fractures.xlsx")
+# --------------------------------- Fractures -------------------------------- #
+fracture <- mapply(fracture_generator, age, sex, seed_list)
+fracture <- unlist(fracture)
 
-fracture_generator <- function(age, sex) {
-  if (age <= 4) {
-    column <- age + 2
-  } else if (age <= 12) {
-    column <- 7    
-  } else if (age <= 17) {
-    if (sex == "M") {
-      column <- 8
-    } else if (sex == "F") {
-      column <- 9
-    }
-  } else if (age > 17) {
-    if (sex == "M") {
-      column <- 10
-    } else if (sex == "F") {
-      column <- 11
-    }
-  }
+# ---------------------------- Residence Situation --------------------------- #
+situation <- mapply(situation_generator, state, race, seed_list)
 
-  # ! make this into a function
-  fractures <- c()
-  for (row in seq_len(nrow(fracture_list))) {
-    fractures[row] <- sample(
-      x = c(TRUE, FALSE),
-      size = 1,
-      prob = c(
-        fracture_list[row, column],
-        1 - fracture_list[row, column]
-      )
-    )
-  }
-
-  places <- fracture_list[[1]]
-  fracture <- paste(places[fractures], sep = ", ")
-  # if (fracture == []) fracture <- NA
-  # !Fix It's returning an empty list if no fractures were selected
-  return(fracture)
-}
-
-fracture <- mapply(fracture_generator, age, sex)
-
-# Housing situation (rural/urban)
-situation_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/housing_situation_by_state.xlsx")
-
-situation_generator <- function(state, race) {
-  person_state <- state  # ! because it was messing the filter
-  situation_chances <- filter(situation_list, state == person_state) %>%
-    select(str_to_lower(race))
-  situation <- sample(
-    x = c("Urbana", "Rural"),
-    size = 1,
-    prob = situation_chances[[1]]
-  )
-  return(situation)
-}
-
-situation <- mapply(situation_generator, state, race)
-
-# Shchooling
-reading_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/reading_by_age_situation_state.xlsx")
-
-reading_generator <- function(state, situation, age, race) {
-  person_state <- state
-  person_situation <- situation
-  person_age <- age
-  if (person_age < 5) return("N")
-  if (race == "Branco") {
-    columns <- 4:5
-  } else if (race == "Preto") {
-    columns  <- 6:7
-  } else if (race == "Amarelo") {
-    columns <- 8:9
-  } else if (race == "Pardo") {
-    columns <- 10:11
-  } else if (race == "Indígena") {
-    columns <- 12:13
-  }
-  reading_chances <- filter(reading_list, state == person_state) %>%
-    filter(situation == person_situation) %>%
-      filter(age == person_age) %>%
-        select(all_of(columns))
-  reading <- sample(
-    x = c("Y", "N"),
-    size = 1,
-    prob = reading_chances
-  )
-  return(reading)
-}
-
+# ----------------------- Alphabetization and Schooling ---------------------- #
+# Alphabetization
 reading <- mapply(reading_generator, state, situation, age, race)
 # TODO: add schooling levels, because I FORGOT TO GET THIS DATA
 
+# Income
