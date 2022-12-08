@@ -336,7 +336,7 @@ activity_time_generator <- function(activity, seed_list) {
 weight_generator <- function(sex, birth, activity_time, seed_list) {
   age_in_months <- floor((birth %--% study_date) / months(1))
   add <- function(mean, sd, weight) {
-    add <- mean + ((weight - 1) * sd)
+    add <- mean + ((weight - 3) * sd)  # 1 -> 3
     return(add)
   }
   if (sex == "M" && age_in_months <= 240) {
@@ -361,7 +361,7 @@ weight_generator <- function(sex, birth, activity_time, seed_list) {
   if (age_in_months <= 240) {
     weight <- rnorm(n = 1, mean = mean, sd = sd)
   } else if (age_in_months > 240) {
-    weight <- rchisq(n = 1, df = 3)
+    weight <- rchisq(n = 1, df = 5)  # 3 -> 5
     weight <- weight + add(mean, sd, weight)
   }
 
@@ -380,6 +380,61 @@ bmi_calc <- function(weight, height) {
   bmi <- round(bmi, 2)
   return(bmi)
 }
+
+# BF%
+bf_percent_generator <- function(age, bmi, sex, seed_list) {
+  if (age < 20) {
+    return(NA)
+  }
+  if (bmi < 18.5) {
+    bmi_class <- "Underweight"
+  } else if (bmi < 25) {
+    bmi_class <- "Healthy"
+  } else if (bmi < 30) {
+    bmi_class <- "Overweight"
+  } else if (bmi < 35) {
+    bmi_class <- "Obesity Class I"
+  } else if (bmi < 40) {
+    bmi_class <- "Obesity Class II"
+  } else {
+    bmi_class <- "Obesity Class III"
+  }
+  if (sex == "M") {
+    database <- male_bf %>%
+      filter(bmi == bmi_class)
+  } else if (sex == "F") {
+    database <- female_bf %>%
+      filter(bmi == bmi_class)
+  }
+  for (group in seq_along(bf_age_groups)) {
+    if (age %in% bf_age_groups[[group]]) {
+      age_group <- names(bf_age_groups[group])
+    }
+  }
+  min_column <- paste(age_group, "min", sep = "_")
+  max_column <- paste(age_group, "max", sep = "_")
+  min <- pull(database, min_column)
+  max <- pull(database, max_column)
+  bf_list <- seq(from = min, to = max, by = .05)
+  set.seed(seed_list)
+  bf <- sample(
+    x = bf_list,
+    size = 1,
+    prob = dnorm(
+      x = bf_list,
+      mean = mean(bf_list),
+      sd = (max - min) / 6
+    )
+  )
+  bf <- round(bf, 1)
+  return(bf)
+}
+
+# BF% -> I should later update the obesity upper limits
+# Probably using ideal IMC as a base and enverythin more is fat
+# I think that the values are coming up a little low... but good enough for now
+
+# ! MM% will be implemented when I have time to get data.
 
 # --------------------------------- Fractures -------------------------------- #
 fracture_generator <- function(age, sex, seed_list) {

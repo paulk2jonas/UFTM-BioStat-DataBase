@@ -36,16 +36,27 @@ if (!require(lubridate)) {
   install.packages("lubridate")
   library(lubridate)
 }
+if (!require(svDialogs)) {
+  install.packages("svDialogs")
+  library(svDialogs)
+}
 
 # ---------------------------------- Sources --------------------------------- #
+source("./UFTM-BioStat-DataBase/config.R")
 source("./UFTM-BioStat-DataBase/personal_info_engine.R")
+source("./UFTM-BioStat-DataBase/socio-economics_engine.R")
 
 # --------------------------------- Variables -------------------------------- #
+# n <- n_selector()
 n <- 1000
+# seed <- seed_selector()
 seed <- 42
 seed_list <- seed_generator(n, seed)
+# language <- language_selector()
 language <- "pt"
-
+# minimum_wage <- wage_selector()
+minimum_wage <- 121200
+# generated_data <- data_selector()  * To be implemented on RStudio
 
 # ---------------------------------------------------------------------------- #
 #                           Data Loading and Managing                          #
@@ -87,6 +98,36 @@ state_initials <- c(
   "Sergipe" = "SE",
   "Tocantins" = "TO",
   "Distrito Federal" = "DF"
+)
+
+state_regions <- c(
+  "Acre" = "Norte",
+  "Alagoas" = "Nordeste",
+  "Amapá" = "Norte",
+  "Amazonas" = "Norte",
+  "Bahia" = "Nordeste",
+  "Ceará" = "Nordeste",
+  "Espírito Santo" = "Sudeste",
+  "Goiás" = "Centro-Oeste",
+  "Maranhão" = "Nordeste",
+  "Mato Grosso" = "Centro-Oeste",
+  "Mato Grosso do Sul" = "Centro-Oeste",
+  "Minas Gerais" = "Sudeste",
+  "Pará" = "Norte",
+  "Paraíba" = "Nordeste",
+  "Paraná" = "Sul",
+  "Pernambuco" = "Nordeste",
+  "Piauí" = "Nordeste",
+  "Rio de Janeiro" = "Sudeste",
+  "Rio Grande do Norte" = "Nordeste",
+  "Rio Grande do Sul" = "Sul",
+  "Rondônia" = "Norte",
+  "Roraima" = "Norte",
+  "Santa Catarina" = "Sul",
+  "São Paulo" = "Sudeste",
+  "Sergipe" = "Nordeste",
+  "Tocantins" = "Norte",
+  "Distrito Federal" = "Centro-Oeste"
 )
 
 # ------------------------- Sex, Gender and Sexuality ------------------------ #
@@ -230,8 +271,27 @@ girls_weight <- read_excel(
   sheet = 2
 )
 
-male_weight <- c("mean" = 74.6, "sd" = 24.5)
-female_weight <- c("mean" = 65.1, "sd" = 23.1)
+# Gonna keep these values because it worked good enough
+male_weight <- c("mean" = 50, "sd" = 4.5)  # 74.6, 24.5 -> 50, 14.5
+female_weight <- c("mean" = 43.6, "sd" = 3.1)  # 65.1, 23.1 -> 43.6, 13.1
+
+# BF%
+male_bf <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/body_fat_percent.xlsx",
+  sheet = 1
+)
+female_bf <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/body_fat_percent.xlsx",
+  sheet = 2
+)
+
+bf_age_groups <- list(
+  "20_29" = 20:29,
+  "30_39" = 30:39,
+  "40_49" = 40:49,
+  "50_59" = 50:59,
+  "60_more" = 60:100
+)
 
 # ! BF% and MM% will be implemented after I fix the weight values,
 
@@ -250,6 +310,103 @@ situation_list <- read_excel(
 reading_list <- read_excel(
   "./UFTM-BioStat-DataBase/Background_Data/reading_by_age_situation_state.xlsx"
 )
+
+# --------------------------- Occupation and Income -------------------------- #
+city_codes <- read_excel(
+  "./UFTM-BioStat-DataBase/Background_Data/city_codes.xls"
+)
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AC2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AL2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AM2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AP2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/BA2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/CE2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/DF2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/ES2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/GO2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MA2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MG2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MS2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MT2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PA2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PB2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PE2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PI2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PR2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RJ2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RN2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RO2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RR2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RS2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SC2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SE2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SP2016.Rda")
+load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/TO2016.Rda")
+
+unemployment_rate <- c(
+  "Norte" = .089,
+  "Nordeste" = .127,
+  "Sudeste" = .093,
+  "Sul" = .056,
+  "Centro-Oeste" = .07
+)
+
+occupation_age_groups <- list(
+  "1" = 14,
+  "2" = 15:17,
+  "3" = 18:24,
+  "4" = 25:29,
+  "5" = 30:39,
+  "6" = 40:49,
+  "7" = 50:64,
+  "8" = 65:99
+)
+
+# Maybe this should be a list
+occupation_database <- list(
+  "Acre" = AC2016,
+  "Alagoas" = AL2016,
+  "Amapá" = AP2016,
+  "Amazonas" = AM2016,
+  "Bahia" = BA2016,
+  "Ceará" = CE2016,
+  "Espírito Santo" = ES2016,
+  "Goiás" = GO2016,
+  "Maranhão" = MA2016,
+  "Mato Grosso" = MT2016,
+  "Mato Grosso do Sul" = MS2016,
+  "Minas Gerais" = MG2016,
+  "Pará" = PA2016,
+  "Paraíba" = PB2016,
+  "Paraná" = PR2016,
+  "Pernambuco" = PE2016,
+  "Piauí" = PI2016,
+  "Rio de Janeiro" = RJ2016,
+  "Rio Grande do Norte" = RN2016,
+  "Rio Grande do Sul" = RS2016,
+  "Rondônia" = RO2016,
+  "Roraima" = RR2016,
+  "Santa Catarina" = SC2016,
+  "São Paulo" = SP2016,
+  "Sergipe" = SE2016,
+  "Tocantins" = TO2016,
+  "Distrito Federal" = DF2016
+)
+
+sex_codes <- c("M" = 1, "F" = 2)
+
+race_codes <- c(
+  "Indígena" = 1,
+  "Branco" = 2,
+  "Preto" = 4,
+  "Amarelo" = 6,
+  "Pardo" = 8
+)
+
+# Using the proportion of 7% (housewives) over the simple mean
+# of unemplyment rates (7/((8.9+12.7+9.3+5.6+7)/5)) = .8
+house_chance <- .8
+nothing_chance <- 1 - house_chance
 
 
 # ---------------------------------------------------------------------------- #
@@ -317,14 +474,16 @@ activity <- mapply(activity_generator, age, sex, seed_list)
 activity_time <- mapply(activity_time_generator, activity, seed_list)
 
 # ------------------------- Weight, BMI, BF% and MM% ------------------------- #
-# ! Still need to tune the values on the funcion. Too many big weights
 # Weight (kg)
 weight <- mapply(weight_generator, sex, birth, activity_time, seed_list)
 
 # BMI
 bmi <- mapply(bmi_calc, weight, height)
 
-# ! BF% and MM% will be implemented after I fix the weight values
+# BF%
+bf_percent <- mapply(bf_percent_generator, age, bmi, sex, seed_list)
+
+# ! MM% will be implemented when I have time to get data.
 
 # --------------------------------- Fractures -------------------------------- #
 fracture <- mapply(fracture_generator, age, sex, seed_list)
@@ -338,4 +497,8 @@ situation <- mapply(situation_generator, state, race, seed_list)
 reading <- mapply(reading_generator, state, situation, age, race)
 # TODO: add schooling levels, because I FORGOT TO GET THIS DATA
 
-# Income
+# Work and Income
+employment <- mapply(employment_generator, age, state, seed_list)
+occupation_data <- mapply(occupation_data_generator, age, state, city, race, employment, seed_list)
+occupation <- unlist(occupation_data[1, ])
+income <- unlist(occupation_data[2, ]) * minimum_wage
