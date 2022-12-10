@@ -424,6 +424,15 @@ internet_classes <- list(
   "200-300" = c(200.01, 300)
 )
 
+# ----------------------------- Health Insurance ----------------------------- #
+health_insurance_chances <- c(
+  "Norte" = .0937,
+  "Nordeste" = .117,
+  "Centro-Oeste" = .199,
+  "Sudeste" = .3264,
+  "Sul" = .2325
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -515,10 +524,25 @@ reading <- mapply(reading_generator, state, situation, age, race)
 
 # Work and Income
 employment <- mapply(employment_generator, age, state, seed_list)
-occupation_data <- mapply(occupation_data_generator, age, state, city, race, employment, seed_list)
+occupation_data <- mapply(
+  occupation_data_generator,
+  age,
+  state,
+  city,
+  race,
+  employment,
+  seed_list
+)
 occupation <- unlist(occupation_data[1, ])
 income <- unlist(occupation_data[2, ]) * minimum_wage
 
 # ------------------------- Internet Access and Speed ------------------------ #
 has_internet <- mapply(has_internet_access, situation, seed_list)
 internet_access <- mapply(internet_access_generator, has_internet, seed_list)
+# TODO: tie the access chance to income
+
+# ----------------------------- Health Insurance ----------------------------- #
+health_insurance <- mapply(health_insurance_generator, state, seed_list)
+
+# ! Have to change the way I deal with income
+# ! the way it is now, children can never have healthy insurance

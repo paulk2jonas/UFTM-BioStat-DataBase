@@ -109,3 +109,19 @@ internet_access_generator <- function(has_internet, seed_list) {
   internet_access <- unname(internet_access)
   return(internet_access)
 }
+
+# ----------------------------- Health Insurance ----------------------------- #
+health_insurance_generator <- function(state, seed_list) {
+  region <- state_regions[state]
+  set.seed(seed_list)
+  health_insurance <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = c(
+      health_insurance_chances[region],
+      1 - health_insurance_chances[region]
+    )
+  )
+  health_insurance <- unname(health_insurance)
+  return(health_insurance)
+}
