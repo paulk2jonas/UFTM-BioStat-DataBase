@@ -68,3 +68,44 @@ occupation_data_generator <- function(age, state, city, race, employment, seed_l
   }
   return(list(occupation, income))
 }
+
+# ------------------------- Internet Access and Speed ------------------------ #
+has_internet_access <- function(situation, seed_list) {
+  set.seed(seed_list)
+  has_internet <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = c(
+      internet_access_chances[situation],
+      1 - internet_access_chances[situation]
+    )
+  )
+  has_internet <- unname(has_internet)
+  return(has_internet)
+}
+
+
+internet_access_generator <- function(has_internet, seed_list) {
+  if (has_internet) {
+    set.seed(seed_list)
+    internet_class <- sample(
+      x = names(internet_classes),
+      size = 1,
+      prob = dnorm(
+        x = seq_len(length(internet_classes)),
+        mean = ceiling(length(internet_classes) / 2),
+        sd = length(internet_classes) / 6
+      )
+    )
+    set.seed(seed_list)
+    internet_access <- runif(
+      n = 1,
+      min = internet_classes[[internet_class]][1],
+      max = internet_classes[[internet_class]][2]
+    )
+  } else {
+    internet_access <- NA
+  }
+  internet_access <- unname(internet_access)
+  return(internet_access)
+}

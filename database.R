@@ -408,6 +408,22 @@ race_codes <- c(
 house_chance <- .8
 nothing_chance <- 1 - house_chance
 
+# ------------------------- Internet Access and Speed ------------------------ #
+internet_access_chances <- c("Urbana" = .9, "Rural" = .747)
+
+internet_classes <- list(
+  "Até 1 Mbps" = c(.01, 1),
+  "1-2" = c(1.01, 2),
+  "2-5" = c(2.01, 5),
+  "5-10" = c(5.01, 10),
+  "10-30" = c(10.01, 30),
+  "30-50" = c(30.01, 50),
+  "50-100" = c(50.01, 100),
+  "100-150" = c(100.01, 150),
+  "150-200" = c(150.01, 200),
+  "200-300" = c(200.01, 300)
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -502,3 +518,7 @@ employment <- mapply(employment_generator, age, state, seed_list)
 occupation_data <- mapply(occupation_data_generator, age, state, city, race, employment, seed_list)
 occupation <- unlist(occupation_data[1, ])
 income <- unlist(occupation_data[2, ]) * minimum_wage
+
+# ------------------------- Internet Access and Speed ------------------------ #
+has_internet <- mapply(has_internet_access, situation, seed_list)
+internet_access <- mapply(internet_access_generator, has_internet, seed_list)
