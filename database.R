@@ -11,6 +11,7 @@
 #     Add friend easter eggs
 #     Remove city_index and other unused variables/files
 #     Get a new standard deviation for adults, and create a impacting score from sports
+#     Verify if the paths work elsewhere
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -41,10 +42,14 @@ if (!require(svDialogs)) {
   library(svDialogs)
 }
 
+
 # ---------------------------------- Sources --------------------------------- #
-source("./UFTM-BioStat-DataBase/config.R")
-source("./UFTM-BioStat-DataBase/personal_info_engine.R")
-source("./UFTM-BioStat-DataBase/socio-economics_engine.R")
+source("./config.R")
+source("./personal_info_engine.R")
+source("./socio-economics_engine.R")
+source("./validation_functions.R")
+source("./helper_functions.R")
+source("./chance_models.R")
 
 # --------------------------------- Variables -------------------------------- #
 # n <- n_selector()
@@ -64,7 +69,7 @@ minimum_wage <- 121200
 
 # --------------------------------- Residence -------------------------------- #
 city_list <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/cities.xlsx",
+  "./Background_Data/cities.xlsx",
   col_types = c("text", "text", "numeric")
 )
 # To save on processing power later on
@@ -133,7 +138,7 @@ state_regions <- c(
 # ------------------------- Sex, Gender and Sexuality ------------------------ #
 # Made by me
 sex_by_city <- read.csv(
-  "./UFTM-BioStat-DataBase/Background_Data/sex_by_city.csv"
+  "./Background_Data/sex_by_city.csv"
 )
 
 # ------------------------------- Age and Birth ------------------------------ #
@@ -141,13 +146,13 @@ study_date <- Sys.Date()
 
 # Age
 age_sex_by_city <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/age.xlsx"
+  "./Background_Data/age.xlsx"
 )
 
 age_range <- 0:99
 
 # Birth
-load("./UFTM-BioStat-DataBase/Background_Data/birth_frequency.RData")
+load("./Background_Data/birth_frequency.RData")
 
 # Zodiac Sign
 zodiac_sign_list <- list(
@@ -183,7 +188,7 @@ chinese_sign_list <- c(
 # ----------------------------------- Name ----------------------------------- #
 # First Name
 forename_list <- read.csv(
-  "./UFTM-BioStat-DataBase/Background_Data/first_name.csv"
+  "./Background_Data/first_name.csv"
 ) %>%
   select(1:4)
 
@@ -191,11 +196,11 @@ name_filter <- FALSE
 
 # Last Name
 surname_list <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/last_name.xlsx"
+  "./Background_Data/last_name.xlsx"
 )
 
 # ------------------------- Race, Hair and Eye Color ------------------------- #
-race_list <- read_excel("./UFTM-BioStat-DataBase/Background_Data/race.xlsx")
+race_list <- read_excel("./Background_Data/race.xlsx")
 if (language == "pt") {
   possible_races <- c("Branco", "Preto", "Amarelo", "Pardo",  "Indígena")
 } else if (language == "en") {
@@ -219,11 +224,11 @@ eye_color_distribution <- c(45, 27, 18, 9)
 
 # -------------------------------- Height (cm) ------------------------------- #
 boys_height_table <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx",
+  "./Background_Data/19_heights.xlsx",
   sheet = 1
 )
 girls_height_table <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/19_heights.xlsx",
+  "./Background_Data/19_heights.xlsx",
   sheet = 2
 )
 
@@ -234,16 +239,16 @@ female_height <- c("mean" = 158, "sd" = 6)
 # Sports
 # Every 0, except when age doesn't make sense, was changed to 0.0005
 sports_by_sex <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  "./Background_Data/sports.xlsx",
   sheet = 1
 )
 sports_by_age <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  "./Background_Data/sports.xlsx",
   sheet = 2
 )
 # Weekly sports time (h)
 sports_time <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/sports.xlsx",
+  "./Background_Data/sports.xlsx",
   sheet = 3
 )
 
@@ -263,11 +268,11 @@ age_groups <- list(
 # ------------------------- Weight, BMI, BF% and MM% ------------------------- #
 # Weight (kg)
 boys_weight <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx",
+  "./Background_Data/weight_by_age.xlsx",
   sheet = 1
 )
 girls_weight <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/weight_by_age.xlsx",
+  "./Background_Data/weight_by_age.xlsx",
   sheet = 2
 )
 
@@ -277,11 +282,11 @@ female_weight <- c("mean" = 43.6, "sd" = 3.1)  # 65.1, 23.1 -> 43.6, 13.1
 
 # BF%
 male_bf <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/body_fat_percent.xlsx",
+  "./Background_Data/body_fat_percent.xlsx",
   sheet = 1
 )
 female_bf <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/body_fat_percent.xlsx",
+  "./Background_Data/body_fat_percent.xlsx",
   sheet = 2
 )
 
@@ -297,51 +302,51 @@ bf_age_groups <- list(
 
 # --------------------------------- Fractures -------------------------------- #
 fracture_list <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/fractures.xlsx"
+  "./Background_Data/fractures.xlsx"
 )
 
 # ---------------------------- Residence Situation --------------------------- #
 situation_list <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/housing_situation_by_state.xlsx"
+  "./Background_Data/housing_situation_by_state.xlsx"
 )
 
 # ----------------------- Alphabetization and Schooling ---------------------- #
 # Alphabetization
 reading_list <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/reading_by_age_situation_state.xlsx"
+  "./Background_Data/reading_by_age_situation_state.xlsx"
 )
 
 # --------------------------- Occupation and Income -------------------------- #
 city_codes <- read_excel(
-  "./UFTM-BioStat-DataBase/Background_Data/city_codes.xls"
+  "./Background_Data/city_codes.xls"
 )
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AC2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AL2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AM2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/AP2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/BA2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/CE2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/DF2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/ES2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/GO2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MA2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MG2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MS2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/MT2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PA2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PB2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PE2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PI2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/PR2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RJ2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RN2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RO2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RR2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/RS2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SC2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SE2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/SP2016.Rda")
-load("./UFTM-BioStat-DataBase/Background_Data/RAIS_data/TO2016.Rda")
+load("./Background_Data/RAIS_data/AC2016.Rda")
+load("./Background_Data/RAIS_data/AL2016.Rda")
+load("./Background_Data/RAIS_data/AM2016.Rda")
+load("./Background_Data/RAIS_data/AP2016.Rda")
+load("./Background_Data/RAIS_data/BA2016.Rda")
+load("./Background_Data/RAIS_data/CE2016.Rda")
+load("./Background_Data/RAIS_data/DF2016.Rda")
+load("./Background_Data/RAIS_data/ES2016.Rda")
+load("./Background_Data/RAIS_data/GO2016.Rda")
+load("./Background_Data/RAIS_data/MA2016.Rda")
+load("./Background_Data/RAIS_data/MG2016.Rda")
+load("./Background_Data/RAIS_data/MS2016.Rda")
+load("./Background_Data/RAIS_data/MT2016.Rda")
+load("./Background_Data/RAIS_data/PA2016.Rda")
+load("./Background_Data/RAIS_data/PB2016.Rda")
+load("./Background_Data/RAIS_data/PE2016.Rda")
+load("./Background_Data/RAIS_data/PI2016.Rda")
+load("./Background_Data/RAIS_data/PR2016.Rda")
+load("./Background_Data/RAIS_data/RJ2016.Rda")
+load("./Background_Data/RAIS_data/RN2016.Rda")
+load("./Background_Data/RAIS_data/RO2016.Rda")
+load("./Background_Data/RAIS_data/RR2016.Rda")
+load("./Background_Data/RAIS_data/RS2016.Rda")
+load("./Background_Data/RAIS_data/SC2016.Rda")
+load("./Background_Data/RAIS_data/SE2016.Rda")
+load("./Background_Data/RAIS_data/SP2016.Rda")
+load("./Background_Data/RAIS_data/TO2016.Rda")
 
 unemployment_rate <- c(
   "Norte" = .089,
@@ -431,6 +436,33 @@ health_insurance_chances <- c(
   "Centro-Oeste" = .199,
   "Sudeste" = .3264,
   "Sul" = .2325
+)
+
+# ------------------------------ Private School ------------------------------ #
+private_public_schools <- read_excel(
+  "./Background_Data/private_public_schools.xlsx"
+)
+load("./Background_Data/school_data.RData")
+
+school_age_groups <- list(
+  "6 a 10" = 6:10,
+  "11 a 14" = 11:14,
+  "15 a 17" = 15:17,
+  "18 ou mais" = 18:99
+)
+
+column_selectors <- list(
+  "F" = "QT_MAT_BAS_FEM",
+  "M" = "QT_MAT_BAS_MASC",
+  "Branco" = "QT_MAT_BAS_BRANCA",
+  "Preto" = "QT_MAT_BAS_PRETA",
+  "Pardo" = "QT_MAT_BAS_PARDA",
+  "Amarelo" = "QT_MAT_BAS_AMARELA",
+  "Indígena" = "QT_MAT_BAS_INDIGENA",
+  "6 a 10" = "QT_MAT_BAS_6_10",
+  "11 a 14" = "QT_MAT_BAS_11_14",
+  "15 a 17" = "QT_MAT_BAS_15_17",
+  "18 ou mais" = "QT_MAT_BAS_18_MAIS"
 )
 
 
@@ -534,6 +566,7 @@ occupation_data <- mapply(
   seed_list
 )
 occupation <- unlist(occupation_data[1, ])
+income_minimum_wage <- unlist(occupation_data[2, ])
 income <- unlist(occupation_data[2, ]) * minimum_wage
 
 # ------------------------- Internet Access and Speed ------------------------ #
@@ -546,3 +579,16 @@ health_insurance <- mapply(health_insurance_generator, state, seed_list)
 
 # ! Have to change the way I deal with income
 # ! the way it is now, children can never have healthy insurance
+
+# ------------------------------ Private School ------------------------------ #
+school_type <- mapply(
+  generate_school_type,
+  age,
+  reading,
+  state,
+  city,
+  sex,
+  race,
+  income_minimum_wage,
+  seed_list
+)

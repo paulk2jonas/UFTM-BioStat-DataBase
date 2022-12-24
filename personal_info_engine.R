@@ -504,6 +504,7 @@ situation_generator <- function(state, race, seed_list) {
 # ----------------------- Alphabetization and Schooling ---------------------- #
 # Alphabetization
 reading_generator <- function(state, situation, age, race) {
+  # utils::globalVariables(reading_list)  # testing
   person_state <- state
   person_situation <- situation
   person_age <- age
@@ -533,7 +534,7 @@ reading_generator <- function(state, situation, age, race) {
     }
   }
   reading <- sample(
-    x = c("Y", "N"),
+    x = c("S", "N"),
     size = 1,
     prob = prob
   )

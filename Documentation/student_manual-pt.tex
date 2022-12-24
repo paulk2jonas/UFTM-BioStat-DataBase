@@ -1,0 +1,170 @@
+\documentclass{book}
+\usepackage[portuguese]{babel}
+\usepackage{listings, xcolor}
+
+\definecolor{backgroundcodigo}{RGB}{240,240,240}
+
+\lstdefinestyle{ex1linha}{
+  backgroundcolor=\color{backgroundcodigo},
+  basicstyle=\ttfamily,%\footnotesize,
+  % numbersize=\footnotesize,
+  numbers=left,
+  numbersep=10pt,
+  tabsize=2,
+  xleftmargin=5pt,
+  framexleftmargin=5pt
+}
+
+\begin{document}
+
+\tableofcontents
+
+\chapter{O banco de dados}
+\section{Informações pessoais}
+\subsection{Nome}
+Os nomes são gerados aleatoriamente de acordo com listas de frequência, sendo que o primeiro nome depende do sexo do indivíduo. As listas foram retiradas de...
+
+\subsection{Idade}
+A idade é representada por um número inteiro de anos, variando de 0 a 99. Para obter idades mais precisas (como meses, úteis para bebês), pode-se usar a data de aniversário.
+
+\subsection{Data de nascimento}
+A data de nascimento é representada no formato dd/mm/aaaa. No momento, não existe nascimento no dia 29 de fevereiro.
+
+\subsection{Signo do zodíaco}
+O signo do zodíaco é representado por uma palavra, dependente da data de nascimento.
+
+\subsection{Signo chinês}
+O signo chinês é representado por uma palavra, dependente do ano de nascimento. Embora o signo chinês correto não depende apenas do ano, mas também do dia do nascimento, esse detalhe não está presente nesse banco de dados.
+
+\subsection{Gênero}
+O gênero é representado por uma letra: ``M'' para masculino e ``F'' para feminino.
+
+\subsection{Altura}
+A altura é representada em centímetros, com precisão de 1 casa decimal. Para obter a altura em metros, basta dividir a coluna (ou a célula) por 100.
+
+\subsection{Peso}
+O peso é representado em kg, com precisão de 2 casas decimais.
+
+\subsection{IMC}
+O IMC é representado em kg/m\textsuperscript{2}, com precisão de 2 casas decimais.
+
+\subsection{Percentual de gordura corporal (BF\%)}
+O percentual de gordura corporal é representado em porcentagem, com 1 casa decimal.
+
+\subsection{Raça}
+A raça é representada por uma palavra. São consideradas 5 raças:
+\begin{itemize}
+  \item Branco
+  \item Preto
+  \item Amarelo
+  \item Pardo
+  \item Indígena
+\end{itemize}
+% ! Talvez "cor" não seja o nome mais adequado, talvez o melhor seja "raça"
+
+\subsection{Cor do cabelo}
+A cor do cabelo é representada por uma ou mais palavras. São consideradas 9 cores:
+\begin{itemize}
+  \item Loiro comum  % ? Eu deveria mesmo deixar o "comum"?
+  \item Castanho claro
+  \item Castanho médio
+  \item Castanho escuro
+  \item Castanho-ruivo
+  \item Ruivo
+  \item Preto
+  \item Grisalho
+  \item Branco
+\end{itemize}
+
+\subsection{Cor dos olhos}
+A cor dos olhos é representada por uma palavra. São consideradas 4 cores:
+\begin{itemize}
+  \item Castanho
+  \item Azul
+  \item Âmbar
+  \item Verde
+\end{itemize}
+
+\subsection{Cidade e estado}
+Cidade e estados são representados em duas colunas, por palavras. Cuidado, pois existem cidades de mesmo nome em mais de um estado. Para selecionar uma cidade específica, filtre por cidade e estado, ou crie uma coluna que agregue as duas informações. Uma sugestão é criar uma coluna no modelo ``Cidade (UF)''.
+
+\section{Dados socioeconômicos}
+
+\subsection{Alfabetização}
+A alfabetização é representada por uma letra: ``S'' representa indivíduos alfabetizados, e ``N'' representa indivíduos analfabetos.
+
+\subsection{Escolaridade}
+% * Provavelmente vou optar por retirar a coluna de alfabetização e unificar com a de escolaridade, até para criar uma necessidade de manipulação pelos alunos.
+
+\subsection{Acesso à educação privada}
+O acesso à educação privada se refere a escolas públicas ou privadas. É representado por uma palavra; indivíduos que não estão em idade escolar recebem NA.
+
+\subsection{Emprego}
+% ! ADICIONAR PARTE SOBRE A CHAVE DE TRANSFORMAÇÃO
+O emprego é representado por um código numérico no \textbf{formato de palavra}. Esse código numérico é advindo da Classificação Brasileira de Ocupações (CBO), do Ministério do Trabalho. Uma chave com todos os códigos e seus nomes principais (pois alguns códigos são usados para um grupo de ocupações semelhantes) está disponível. ``Do lar'' representa indivíduos sem ocupação oficial, mas que cuidam da própria casa. Indivíduos desempregados, que não se ocupam com a própria residência são representados por NA.
+
+\subsection{Renda}
+A renda está representada por um número no formato R\$reais,centavos. Indivíduos que não têm renda recebem NA.
+
+\subsection{Velocidade de acesso à internet}
+A velocidade da internet à qual o indivíduo tem acesso é representada por em Mbps, com precisão de 1 casa decimal. Indivíduos sem acesso à internet recebem NA.
+
+\subsection{Plano de saúde privado}
+O acesso a um plano de saúde privado é representado por uma letra: ``S'' representa indivíduos com um plano de saúde privado, e ``N'' representa indivíduos sem acesso a plano de saúde privado.
+
+\section{Saúde}
+
+\subsection{Atividade esportiva}
+A prática de atividade esportiva é representada em duas colunas. A primeira indica o esporte práticado pelo indivíduo, sendo que indivíduos que não praticam qualquer esporte recebem o valor "Sedentário". A segunda indica o tempo médio em horas, por semana, de prática do esporte (com precisão de uma casa decimal); indivíduos sedentários recebem o valor NA.
+
+\chapter{Técnicas úteis}
+\section{Tratar NAs}
+Algumas colunas do banco de dados têm "dados faltantes". No R, dados faltantes são representados por ``NA'' (Not Available). Em uma análise de dados, é importante definir como lidar com dados indisponíveis, já que nem sempre se pode simplesmente ignorar os dados indisponíveis. No mínimo, em alguns casos, eles podem diminuir o tamanho amostral de parte da análise; em outros, podem afetar a validade da análise se não forem considerados.
+\par
+Muitas funções não ignoram NAs automaticamente, como uma forma de forçar o usuário a considerar como tratá-los, além de deixar evidente caso um conjunto de dados tenha algum NA perdido no meio, que poderia passar despercebido. Um exemplo é a função \texttt{sum()}. Por padrão, essa função retorna NA se encontrar qualquer NA dentro dos dados entregues a ela. Para contornar isso, basta passar o argumento \texttt{na.rm = TRUE}. Muitas funções têm um parâmetro semelhante.
+\par
+A permanência de NAs na sua análise depende da sua seleção de dados. Por exemplo: se você decidir analisar pessoas com renda maior que 1 salário mínimo mensal, naturalmente vai retirar os NAs da coluna. Porém, se você fizer uma amostragem de mulheres pretas da cidade de São Paulo, e decidir analisar as rendas, provavelmente vai encontrar alguns NAs no meio dos seus dados. Dependendo da sua análise, considere de que forma a falta de alguns dados afeta a interpretação. De forma alguma ignore os NAs sem ter certeza que faz sentido ignorá-los.
+
+\subsection{Códigos para lidar com NAs}
+\subsubsection{Verificando a existência de NAs}
+Você pode procurar se existe ao menos um NA em um conjunto de dados com o operador \texttt{\%in\%}, o que retorna TRUE ou FALSE:
+
+\lstset{style=ex1linha}
+\begin{lstlisting}[language=R]
+NA %in% data
+\end{lstlisting}
+
+Você também pode encontrar quais valores são NA com \texttt{is.na()} (retorna TRUE ou FALSE, ou uma sequência deles). Essa função pode servir de filtro, também (no primeiro caso, mostra apenas os dados que são NA; no segundo, apenas os que não são):
+
+\lstset{style=ex1linha}
+\begin{lstlisting}[language=R]
+is.na(data)
+data[is.na(data)]
+data[!is.na(data)]
+\end{lstlisting}
+
+\subsubsection{Lidando com NAs nativamente}
+Ao invés da opção \texttt{na.rm}, algumas funções usam \texttt{na.action}. Nesses casos, elas utilizam a ação padrão atribuída nas opções do R, mas permitem uma mudança local nessas opções (como a função \texttt{lm()}):
+
+\begin{itemize}
+  \item[\textbf{\texttt{na.omit/na.exclude}}] Remove as observações que contém NA e retorna o objeto
+  \item[\textbf{\texttt{na.pass}}] Retorna o objeto sem modificar
+  \item[\textbf{\texttt{na.fail}}] Retorna o objeto apenas se não tiver NA
+\end{itemize}
+
+\subsubsection{Lidando com NAs usando o Tidyr (do Tidyverse)}
+O pacote Tidyr oferece 3 formas de lidar com NAs:
+
+\begin{itemize}
+  \item[\textbf{\texttt{drop\_na()}}] Remove linhas contenho NAs nas colunas apontadas
+  \item[\textbf{\texttt{fill()}}] Completa com o valor que veio antes ou que vem depois (dependendo da escolha)
+  \item[\textbf{\texttt{replace\_na()}}] Substitui os NAs pelo valor escolhido.
+\end{itemize}
+
+Note que você pode utilizar \texttt{replace\_na()} para colocar um valor calculado, como a mediana ou a média dos valores disponíveis.
+
+\section{Manipulação de datas}
+\section{Manipulação de texto}
+\section{Criação de colunas}
+
+\end{document}

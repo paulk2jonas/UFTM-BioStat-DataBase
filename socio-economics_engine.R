@@ -103,6 +103,7 @@ internet_access_generator <- function(has_internet, seed_list) {
       min = internet_classes[[internet_class]][1],
       max = internet_classes[[internet_class]][2]
     )
+    internet_access <- round(internet_access, 1)
   } else {
     internet_access <- NA
   }
@@ -115,7 +116,7 @@ health_insurance_generator <- function(state, seed_list) {
   region <- state_regions[state]
   set.seed(seed_list)
   health_insurance <- sample(
-    x = c(TRUE, FALSE),
+    x = c("S", "N"),
     size = 1,
     prob = c(
       health_insurance_chances[region],
@@ -124,4 +125,46 @@ health_insurance_generator <- function(state, seed_list) {
   )
   health_insurance <- unname(health_insurance)
   return(health_insurance)
+}
+
+# ------------------------------ Private School ------------------------------ #
+generate_school_type <- function(
+  age,
+  reading,
+  state,
+  city,
+  sex,
+  race,
+  income_minimum_wage,
+  seed_list
+) {
+  if (!validate_school_type(age, reading)) {
+    return(NA)
+  }
+
+  city_code <- find_city_code(state, city)
+  if (!city_code %in% private_school_data$CO_MUNICIPIO) return("Pública")
+
+  for (group in seq_along(school_age_groups)) {
+    if (age %in% school_age_groups[[group]]) {
+      age_group <- names(school_age_groups[group])
+    }
+  }
+
+  prob <- calculate_school_type_chances(
+    sex,
+    race,
+    age_group,
+    income_minimum_wage,
+    city_code
+  )
+
+  set.seed(seed_list)
+  school_type <- sample(
+    x = c("Privada", "Pública"),
+    size = 1,
+    prob = prob
+  )
+
+  return(school_type)
 }
