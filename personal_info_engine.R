@@ -540,3 +540,53 @@ reading_generator <- function(state, situation, age, race) {
   )
   return(reading)
 }
+
+generate_schooling_level <- function(
+  age,
+  reading,
+  state,
+  sex,
+  race,
+  seed_list
+) {
+  # valid_age <- validate_schooling_level(age)
+  # if (!valid_age) {
+  #   return(ifelse(age >= 6, "Ensino fundamental incompleto", NA))
+  #   if (age >= 6) {
+
+  #   }
+  # }
+  if (!validate_schooling_level(age, reading)) {
+    if (age < 6) return(NA)
+    if (reading == "S") return("Ensino fundamental incompleto")
+    return("Sem instrução")
+  }
+
+  if (reading == "N") return("Sem instrução")
+
+  person_state <- state
+  race_group <- race_translation[race]
+
+  if (age >= 25) {
+    sex_data <- age_25_sex
+    race_data <- age_25_race
+  } else {
+    sex_data <- age_14_24_sex
+    race_data <- age_14_24_race
+  }
+
+  sex_prob <- filter(sex_data, state == person_state) %>%
+    pull(sex)
+  race_prob <- filter(race_data, state == person_state)  %>%
+    pull(race_group)
+  prob <- sex_prob * race_prob
+
+  set.seed(seed_list)
+  schooling <- sample(
+    x = instruction_level,
+    size = 1,
+    prob = prob
+  )
+
+  return(schooling)
+}

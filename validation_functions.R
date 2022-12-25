@@ -15,3 +15,18 @@ validate_school_type <- function(age, reading) {
   return(right_age & reads)
 }
 
+validate_schooling_level <- function(age, reading) {
+  if (age < 14) {
+    right_age <- FALSE
+  } else {
+    right_age <- TRUE
+  }
+
+  if (reading == "S") {
+    reads <- TRUE
+  } else if (reading == "N") {
+    reads <- FALSE
+  }
+
+  return(right_age & reads)
+}

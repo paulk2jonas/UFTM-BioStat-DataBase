@@ -12,6 +12,7 @@
 #     Remove city_index and other unused variables/files
 #     Get a new standard deviation for adults, and create a impacting score from sports
 #     Verify if the paths work elsewhere
+#     Add some relation between private schools and college prevalence
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -316,6 +317,42 @@ reading_list <- read_excel(
   "./Background_Data/reading_by_age_situation_state.xlsx"
 )
 
+# Schooling
+age_14_24_sex <- read_excel(
+  "./Background_Data/instruction_level.xlsx",
+  sheet = "14_sex"
+)
+age_14_24_race <- read_excel(
+  "./Background_Data/instruction_level.xlsx",
+  sheet = "14_race"
+)
+age_25_sex <- read_excel(
+  "./Background_Data/instruction_level.xlsx",
+  sheet = "25_sex"
+)
+age_25_race <- read_excel(
+  "./Background_Data/instruction_level.xlsx",
+  sheet = "25_race"
+)
+
+instruction_level <- c(
+  "Sem instrução",
+  "Ensino fundamental incompleto",
+  "Ensino fundamental completo",
+  "Ensino médio incompleto",
+  "Ensino médio completo",
+  "Ensino superior incompleto",
+  "Ensino superior completo"
+)
+
+race_translation <- c(
+  "Branco" = "white",
+  "Pardo" = "black_multiracial",
+  "Amarelo" = "white",
+  "Preto" = "black_multiracial",
+  "Indígena" = "black_multiracial"
+)
+
 # --------------------------- Occupation and Income -------------------------- #
 city_codes <- read_excel(
   "./Background_Data/city_codes.xls"
@@ -552,7 +589,17 @@ situation <- mapply(situation_generator, state, race, seed_list)
 # ----------------------- Alphabetization and Schooling ---------------------- #
 # Alphabetization
 reading <- mapply(reading_generator, state, situation, age, race)
-# TODO: add schooling levels, because I FORGOT TO GET THIS DATA
+
+# Schooling
+schooling <- mapply(
+  generate_schooling_level,
+  age,
+  reading,
+  state,
+  sex,
+  race,
+  seed_list
+)
 
 # Work and Income
 employment <- mapply(employment_generator, age, state, seed_list)
