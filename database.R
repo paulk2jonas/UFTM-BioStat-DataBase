@@ -48,6 +48,7 @@ if (!require(svDialogs)) {
 source("./config.R")
 source("./personal_info_engine.R")
 source("./socio-economics_engine.R")
+source("./health_engine.R")
 source("./validation_functions.R")
 source("./helper_functions.R")
 source("./chance_models.R")
@@ -502,6 +503,13 @@ column_selectors <- list(
   "18 ou mais" = "QT_MAT_BAS_18_MAIS"
 )
 
+# -------------------------------- Blood Type -------------------------------- #
+# ABO
+abo_distribution <- c(A = .42, B = .1, AB = .03, O = .45)
+
+# Rh
+rh_distribution <- c(pos = .805, neg = .195)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -639,3 +647,13 @@ school_type <- mapply(
   income_minimum_wage,
   seed_list
 )
+
+# -------------------------------- Blood Type -------------------------------- #
+# ABO
+abo_type <- generate_abo_blood_type(abo_distribution, n)
+
+# Rh
+rh_type <- generate_rh_blood_type(rh_distribution, n)
+
+# Blood type
+blood_type <- paste(abo_type, rh_type, sep = " ")
