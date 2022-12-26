@@ -590,3 +590,23 @@ generate_schooling_level <- function(
 
   return(schooling)
 }
+
+# -------------------------------- Blood Type -------------------------------- #
+# Personality traits
+generate_abo_personality <- function(abo_type) {
+  number_of_traits <- 3
+
+  possible_traits <- generate_possible_traits(abo_type)
+
+  prob <- calculate_traits_chances(abo_type, possible_traits)
+
+  traits <- sample(
+    x = possible_traits,
+    size = number_of_traits,
+    prob = prob
+  )
+  traits <- unname(traits)
+  traits <- paste(traits, collapse = ", ")
+
+  return(traits)
+}

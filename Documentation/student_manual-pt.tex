@@ -88,6 +88,9 @@ A cor dos olhos é representada por uma palavra. São consideradas 4 cores:
 \subsection{Cidade e estado}
 Cidade e estados são representados em duas colunas, por palavras. Cuidado, pois existem cidades de mesmo nome em mais de um estado. Para selecionar uma cidade específica, filtre por cidade e estado, ou crie uma coluna que agregue as duas informações. Uma sugestão é criar uma coluna no modelo ``Cidade (UF)''.
 
+\subsection{Personalidade}
+A personalidade é descrita por 3 palavras, separadas por vírgula e espaço. A maneira mais fácil de fazer análises nessa coluna é separar os 3 traços.
+
 \section{Dados socioeconômicos}
 
 \subsection{Alfabetização}
@@ -125,6 +128,9 @@ O acesso a um plano de saúde privado é representado por uma letra: ``S'' repre
 
 \subsection{Atividade esportiva}
 A prática de atividade esportiva é representada em duas colunas. A primeira indica o esporte práticado pelo indivíduo, sendo que indivíduos que não praticam qualquer esporte recebem o valor "Sedentário". A segunda indica o tempo médio em horas, por semana, de prática do esporte (com precisão de uma casa decimal); indivíduos sedentários recebem o valor NA.
+
+\subsection{Tipo sanguíneo}
+O tipo sanguíneo é representado por um termo: o primeiro se refere ao tipo no sistema ABO, e o segundo no sistema Rh . Dependendo da análise desejada, pode ser conveniente separar os dois sistemas em colunas diferentes.
 
 \chapter{Técnicas úteis}
 \section{Tratar NAs}
@@ -174,6 +180,6 @@ Note que você pode utilizar \texttt{replace\_na()} para colocar um valor calcul
 
 \section{Manipulação de datas}
 \section{Manipulação de texto}
-\section{Criação de colunas}
+\section{Criação de colunas}  % Separando um dado em mais de uma coluna
 
 \end{document}

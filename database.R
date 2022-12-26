@@ -510,6 +510,68 @@ abo_distribution <- c(A = .42, B = .1, AB = .03, O = .45)
 # Rh
 rh_distribution <- c(pos = .805, neg = .195)
 
+# Personality traits
+blood_type_personality_traits <- list(
+  "A" = c(
+    "Organizado",
+    "Meticuloso",
+    "Tímido",
+    "Sensível",
+    "Paciente",
+    "Ansioso",
+    "Intenso",
+    "Reservado",
+    "Educado",
+    "Atencioso",
+    "Responsável",
+    "Perfeccionista",
+    "Bondoso",
+    "Consciente"
+  ),
+  "B" = c(
+    "Criativo",
+    "Curioso",
+    "Forte",
+    "Aventureiro",
+    "Pragmático",
+    "Animado",
+    "Disposto",
+    "Proativo",
+    "Inconvencional",
+    "Jovial"
+  ),
+  "AB" = c(
+    "Dual",
+    "Reflexivo",
+    "Talentoso",
+    "Racional",
+    "Controlado",
+    "Espiritual",
+    "Centrado",
+    "Artístico",
+    "Misterioso",
+    "Diplomata",
+    "Confiável",
+    "Sociável"
+  ),
+  "O" = c(
+    "Otimista",
+    "Flexível",
+    "Confiante",
+    "Determinado",
+    "Energético",
+    "Calmo",
+    "Social",
+    "Leal",
+    "Líder",
+    "Intuitivo",
+    "Trabalhador",
+    "Independente",
+    "Centrado",
+    "Devotado"
+  )
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -657,3 +719,6 @@ rh_type <- generate_rh_blood_type(rh_distribution, n)
 
 # Blood type
 blood_type <- paste(abo_type, rh_type, sep = " ")
+
+# Personality traits
+personality <- mapply(generate_abo_personality, abo_type)

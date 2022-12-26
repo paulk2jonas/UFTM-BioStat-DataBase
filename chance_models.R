@@ -42,3 +42,11 @@ calculate_school_income_factor <- function(
   public_factor <- 1 / private_factor
   return(c(private_factor, public_factor))
 }
+
+calculate_traits_chances <- function(abo_type, possible_traits) {
+  expected_length <- length(blood_type_personality_traits[[abo_type]])
+  additional_length <- length(possible_traits) - expected_length
+  prob <- c(rep(1, expected_length), rep(.5, additional_length))
+
+  return(prob)
+}
