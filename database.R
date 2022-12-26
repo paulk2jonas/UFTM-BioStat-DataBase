@@ -452,6 +452,9 @@ race_codes <- c(
 house_chance <- .8
 nothing_chance <- 1 - house_chance
 
+# ------------------------------ Marital Status ------------------------------ #
+marital_distribution <- read_excel("./Background_Data/marital_status.xlsx")
+
 # ------------------------- Internet Access and Speed ------------------------ #
 internet_access_chances <- c("Urbana" = .9, "Rural" = .747)
 
@@ -868,6 +871,9 @@ occupation <- unlist(occupation_data[1, ])
 income_minimum_wage <- unlist(occupation_data[2, ])
 income <- unlist(occupation_data[2, ]) * minimum_wage
 
+# ------------------------------ Marital Status ------------------------------ #
+marital_status <- mapply(generate_marital_status, age, situation, seed_list)
+
 # ------------------------- Internet Access and Speed ------------------------ #
 has_internet <- mapply(has_internet_access, situation, seed_list)
 internet_access <- mapply(internet_access_generator, has_internet, seed_list)
@@ -903,11 +909,11 @@ rh_type <- generate_rh_blood_type(rh_distribution, n)
 blood_type <- paste(abo_type, rh_type, sep = " ")
 
 # Personality traits
-personality <- mapply(generate_abo_personality, abo_type)
+personality <- mapply(generate_abo_personality, abo_type, seed_list)
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
-football_team <- mapply(generate_football_team, age, sex)
+football_team <- mapply(generate_football_team, age, sex, seed_list)
 
 # Travel Destiny
 prefered_travel <- mapply(
@@ -926,7 +932,12 @@ prefered_day_period <- mapply(
 )
 
 # Prefered meal
-prefered_meal <- mapply(generate_meal_preference, age, prefered_day_period)
+prefered_meal <- mapply(
+  generate_meal_preference,
+  age,
+  prefered_day_period,
+  seed_list
+)
 
 # Favorite food
 favorite_food <- mapply(generate_favorite_food, age, state, seed_list)

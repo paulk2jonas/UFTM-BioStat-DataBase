@@ -10,8 +10,9 @@ find_city_code <- function(state_name, city_name) {
 
 # * Create function to "unify" age groups
 
-generate_possible_traits <- function(abo_type) {
+generate_possible_traits <- function(abo_type, seed_list) {
   expected_traits <- blood_type_personality_traits[[abo_type]]
+  set.seed(seed_list)
   additional_traits <- sample(
     x = unlist(blood_type_personality_traits),
     size = 5

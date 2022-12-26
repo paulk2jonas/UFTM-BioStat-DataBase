@@ -590,3 +590,18 @@ generate_schooling_level <- function(
 
   return(schooling)
 }
+
+# ------------------------------ Marital Status ------------------------------ #
+generate_marital_status <- function(age, situation, seed_list) {
+  if (!validate_marital_age(age)) return(NA)
+
+  prob <- calculate_marital_chances(situation, age)
+
+  set.seed(seed_list)
+  marital_status <- sample(
+    x = pull(marital_distribution, marital_status),
+    size = 1,
+    prob = prob
+  )
+  return(marital_status)
+}

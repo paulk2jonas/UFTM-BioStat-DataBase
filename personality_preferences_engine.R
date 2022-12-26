@@ -1,12 +1,13 @@
 # -------------------------------- Blood Type -------------------------------- #
 # Personality traits
-generate_abo_personality <- function(abo_type) {
+generate_abo_personality <- function(abo_type, seed_list) {
   number_of_traits <- 3
 
-  possible_traits <- generate_possible_traits(abo_type)
+  possible_traits <- generate_possible_traits(abo_type, seed_list)
 
   prob <- calculate_traits_chances(abo_type, possible_traits)
 
+  set.seed(seed_list)
   traits <- sample(
     x = possible_traits,
     size = number_of_traits,
@@ -20,9 +21,10 @@ generate_abo_personality <- function(abo_type) {
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
-generate_football_team <- function(age, sex) {
-  if (!validate_football_fan(age, sex)) return("Não torce")
+generate_football_team <- function(age, sex, seed_list) {
+  if (!validate_football_fan(age, sex, seed_list)) return("Não torce")
 
+  set.seed(seed_list)
   team <- sample(
     x = football_clubs$club,
     size = 1,
@@ -67,11 +69,12 @@ generate_day_period_preference <- function(age, personality, seed_list) {
 }
 
 # Prefered meal
-generate_meal_preference <- function(age, prefered_day_period) {
+generate_meal_preference <- function(age, prefered_day_period, seed_list) {
   if (!validate_meal_age(age)) return(NA)
 
-  prob <- calculate_meal_chances(prefered_day_period)
+  prob <- calculate_meal_chances(prefered_day_period, seed_list)
 
+  set.seed(seed_list)
   meal <- sample(
     x = meals,
     size = 1,

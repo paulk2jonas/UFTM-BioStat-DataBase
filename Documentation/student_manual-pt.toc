@@ -15,18 +15,19 @@
 \contentsline {subsection}{\numberline {1.1.12}Cor do cabelo}{4}{}%
 \contentsline {subsection}{\numberline {1.1.13}Cor dos olhos}{5}{}%
 \contentsline {subsection}{\numberline {1.1.14}Cidade e estado}{5}{}%
+\contentsline {subsection}{\numberline {1.1.15}Estado civil}{5}{}%
 \contentsline {section}{\numberline {1.2}Personalidade e preferências}{5}{}%
 \contentsline {subsection}{\numberline {1.2.1}Personalidade}{5}{}%
 \contentsline {subsection}{\numberline {1.2.2}Time de futebol}{5}{}%
 \contentsline {subsection}{\numberline {1.2.3}Destino de viagem}{5}{}%
-\contentsline {subsection}{\numberline {1.2.4}Período do dia}{5}{}%
+\contentsline {subsection}{\numberline {1.2.4}Período do dia}{6}{}%
 \contentsline {subsection}{\numberline {1.2.5}Refeição}{6}{}%
 \contentsline {subsection}{\numberline {1.2.6}Prato}{6}{}%
 \contentsline {section}{\numberline {1.3}Dados socioeconômicos}{6}{}%
 \contentsline {subsection}{\numberline {1.3.1}Alfabetização}{6}{}%
 \contentsline {subsection}{\numberline {1.3.2}Escolaridade}{6}{}%
 \contentsline {subsection}{\numberline {1.3.3}Acesso à educação privada}{6}{}%
-\contentsline {subsection}{\numberline {1.3.4}Emprego}{6}{}%
+\contentsline {subsection}{\numberline {1.3.4}Emprego}{7}{}%
 \contentsline {subsection}{\numberline {1.3.5}Renda}{7}{}%
 \contentsline {subsection}{\numberline {1.3.6}Velocidade de acesso à internet}{7}{}%
 \contentsline {subsection}{\numberline {1.3.7}Plano de saúde privado}{7}{}%

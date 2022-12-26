@@ -32,10 +32,11 @@ validate_schooling_level <- function(age, reading) {
 }
 
 # Football team
-validate_football_fan <- function(age, sex) {
+validate_football_fan <- function(age, sex, seed_list) {
   if (age < 4) return(FALSE)
 
   if (sex == "F") {
+    set.seed(seed_list)
     fan <- sample(
       x = c(TRUE, FALSE),
       size = 1
@@ -65,4 +66,9 @@ validate_meal_age <- function(age) {
 # Favorite food
 validate_food_age <- function(age) {
   if (age < 7) return(FALSE) else return(TRUE)
+}
+
+# Marital Status
+validate_marital_age <- function(age) {
+  if (age < 16) return(FALSE) else return(TRUE)
 }

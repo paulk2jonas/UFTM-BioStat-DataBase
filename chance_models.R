@@ -78,7 +78,8 @@ calculate_day_period_chances <- function(personality) {
 }
 
 # Prefered meal
-calculate_meal_chances <- function(prefered_day_period) {
+calculate_meal_chances <- function(prefered_day_period, seed_list) {
+  set.seed(seed_list)
   error_term <- runif(1, min = -1, max = 1)
 
   if (prefered_day_period == "Manhã") {
@@ -98,4 +99,22 @@ calculate_meal_chances <- function(prefered_day_period) {
   }
 
   return(c(breakfast_chance, lunch_chance, dinner_chance))
+}
+
+# Marital Status
+calculate_marital_chances <- function(situation, age) {
+  situation_chance <- pull(marital_distribution, situation)
+
+  single_chance <- ((-3 / 20) * age) + 15.7
+  married_chance <- ((11.7 / 100) * age) + 0.3
+  divorced_chance <- ((12.9 / 100) * age) + 0.2
+  widowed_chance <- ((15.5 / 100) * age) + 0.1
+  age_chance <- c(
+    single_chance,
+    married_chance,
+    divorced_chance,
+    widowed_chance
+  )
+
+  return(situation_chance * age_chance)
 }
