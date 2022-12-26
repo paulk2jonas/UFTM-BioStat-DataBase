@@ -712,6 +712,49 @@ evening_traits <- c(
 # Prefered meal
 meals <- c("Café da manhã", "Almoço", "Jantar")
 
+# Favorite food
+foods <- c(
+  "Churrasco",
+  "Feijoada",
+  "Coxinha",
+  "Pastel",
+  "Bife acebolado",
+  "Moqueca",
+  "Acarajé",
+  "Baião de dois",
+  "Arroz carreteiro",
+  "Feijão tropeiro",
+  "Paçoca de carne seca",
+  "Galinhada",
+  "Lasanha",
+  "Macarrão",
+  "Pizza",
+  "Frango assado",
+  "Comida mexicana",
+  "Comida japonesa",
+  "Comida chinesa",
+  "Chocolate",
+  "Churros",
+  "Cachorro quente",
+  "Estrogonofe",
+  "Brigadeiro",
+  "Tapioca",
+  "Pão de queijo",
+  "Açaí",
+  "Sorvete",
+  "Risoto"
+)
+
+state_foods <- list(
+  "Amazônia" = "Tacacá",
+  "Goiás" = "Arroz com pequi",
+  "Minas Gerais" = "Frango ao molho pardo",
+  "Pará" = "Pato no Tucupi",
+  "Paraná" = "Barreado",
+  "São Paulo" = c("Virado à paulista", "Camarão na moranga")
+)
+
+
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
 # ---------------------------------------------------------------------------- #
@@ -884,3 +927,6 @@ prefered_day_period <- mapply(
 
 # Prefered meal
 prefered_meal <- mapply(generate_meal_preference, age, prefered_day_period)
+
+# Favorite food
+favorite_food <- mapply(generate_favorite_food, age, state, seed_list)

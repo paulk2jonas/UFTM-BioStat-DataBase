@@ -61,3 +61,8 @@ validate_meal_age <- function(age) {
   if (age < 6) return(FALSE) else return(TRUE)
   # can never be less than the day period cut
 }
+
+# Favorite food
+validate_food_age <- function(age) {
+  if (age < 7) return(FALSE) else return(TRUE)
+}

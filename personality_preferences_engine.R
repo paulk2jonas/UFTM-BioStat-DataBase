@@ -80,3 +80,15 @@ generate_meal_preference <- function(age, prefered_day_period) {
 
   return(meal)
 }
+
+# Favorite food
+generate_favorite_food <- function(age, state, seed_list) {
+  if (!validate_food_age(age)) return(NA)
+
+  possible_foods <- generate_possible_foods(state)
+
+  set.seed(seed_list)
+  favorite_food <- sample(x = possible_foods, size = 1)
+
+  return(favorite_food)
+}

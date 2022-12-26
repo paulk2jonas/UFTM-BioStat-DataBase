@@ -21,3 +21,11 @@ generate_possible_traits <- function(abo_type) {
 
   return(possible_traits)
 }
+
+generate_possible_foods <- function(state) {
+  additional_food <- state_foods[[state]]
+
+  possible_foods <- c(foods, additional_food)
+
+  return(possible_foods)
+}
