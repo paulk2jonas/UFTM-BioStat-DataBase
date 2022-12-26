@@ -51,6 +51,7 @@ calculate_traits_chances <- function(abo_type, possible_traits) {
   return(prob)
 }
 
+# Travel Destiny
 calculate_travel_chances <- function(personality) {
   beach_matches <- sum(str_detect(personality, beach_traits))
   country_matches <- sum(str_detect(personality, country_traits))
@@ -61,4 +62,17 @@ calculate_travel_chances <- function(personality) {
   city_chance <- ifelse(city_matches >= 1, 2 * city_matches, 1)
 
   return(c(beach_chance, country_chance, city_chance))
+}
+
+# Period of the day
+calculate_day_period_chances <- function(personality) {
+  morning_matches <- sum(str_detect(personality, morning_traits))
+  afternoon_matches <- sum(str_detect(personality, afternoon_traits))
+  evening_matches <- sum(str_detect(personality, evening_traits))
+
+  morning_chance <- ifelse(morning_matches >= 1, 2 * morning_matches, 1)
+  afternoon_chance <- ifelse(afternoon_matches >= 1, 4 * afternoon_matches, 1)
+  evening_chance <- ifelse(evening_matches >= 1, 5 * evening_matches, 1)
+
+  return(c(morning_chance, afternoon_chance, evening_chance))
 }

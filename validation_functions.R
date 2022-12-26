@@ -48,3 +48,7 @@ validate_football_fan <- function(age, sex) {
 validate_travel_age <- function(age) {
   if (age < 7) return(FALSE) else return(TRUE)
 }
+
+validate_day_period_age <- function(age) {
+  if (age < 5) return(FALSE) else return(TRUE)
+}

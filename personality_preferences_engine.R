@@ -48,3 +48,20 @@ generate_travel_preference <- function(age, personality, seed_list) {
   )
   return(travel)
 }
+
+# Period of the day
+generate_day_period_preference <- function(age, personality, seed_list) {
+  if (!validate_day_period_age(age)) {
+    return(NA)
+  }
+
+  prob <- calculate_day_period_chances(personality)
+
+  set.seed(seed_list)
+  day_period <- sample(
+    x = day_periods,
+    size = 1,
+    prob = prob
+  )
+  return(day_period)
+}

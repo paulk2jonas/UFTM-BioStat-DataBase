@@ -637,6 +637,78 @@ city_traits <- c(
   "Centrado"
 )
 
+# Period of the day
+day_periods <- c("Manhã", "Tarde", "Noite")
+
+morning_traits <- c(
+  "Organizado",
+  "Meticuloso",
+  "Educado",
+  "Atencioso",
+  "Responsável",
+  "Perfeccionista",
+  "Criativo",
+  "Pragmático",
+  "Animado",
+  "Disposto",
+  "Proativo",
+  "Inconvencional",
+  "Reflexivo",
+  "Talentoso",
+  "Racional",
+  "Controlado",
+  "Centrado",
+  "Confiável",
+  "Otimista",
+  "Flexível",
+  "Confiante",
+  "Determinado",
+  "Energético",
+  "Calmo",
+  "Líder",
+  "Intuitivo",
+  "Trabalhador",
+  "Independente",
+  "Centrado",
+  "Devotado"
+)
+afternoon_traits <- c("Sensível",
+  "Paciente",
+  "Ansioso",
+  "Intenso",
+  "Consciente",
+  "Criativo",
+  "Curioso",
+  "Forte",
+  "Jovial",
+  "Confiável",
+  "Social",
+  "Otimista",
+  "Flexível",
+  "Confiante",
+  "Leal",
+  "Intuitivo"
+)
+evening_traits <- c(
+  "Ansioso",
+  "Intenso",
+  "Criativo",
+  "Curioso",
+  "Forte",
+  "Aventureiro",
+  "Animado",
+  "Inconvencional",
+  "Jovial",
+  "Talentoso",
+  "Espiritual",
+  "Misterioso",
+  "Diplomata",
+  "Confiável",
+  "Social",
+  "Energético",
+  "Leal"
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -793,4 +865,17 @@ personality <- mapply(generate_abo_personality, abo_type)
 football_team <- mapply(generate_football_team, age, sex)
 
 # Travel Destiny
-prefered_travel <- mapply(generate_travel_preference, age, personality, seed_list)
+prefered_travel <- mapply(
+  generate_travel_preference,
+  age,
+  personality,
+  seed_list
+)
+
+# Period of the day
+prefered_travel <- mapply(
+  generate_day_period_preference,
+  age,
+  personality,
+  seed_list
+)
