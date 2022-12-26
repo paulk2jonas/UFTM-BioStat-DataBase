@@ -76,3 +76,26 @@ calculate_day_period_chances <- function(personality) {
 
   return(c(morning_chance, afternoon_chance, evening_chance))
 }
+
+# Prefered meal
+calculate_meal_chances <- function(prefered_day_period) {
+  error_term <- runif(1, min = -1, max = 1)
+
+  if (prefered_day_period == "Manhã") {
+    breakfast_chance <- 10
+    lunch_chance <- 1 + error_term
+    dinner_chance <- 1 + error_term
+  }
+  if (prefered_day_period == "Tarde") {
+    breakfast_chance <- 1 + error_term
+    lunch_chance <- 10
+    dinner_chance <- 1 + error_term
+  }
+  if (prefered_day_period == "Noite") {
+    breakfast_chance <- 1 + error_term
+    lunch_chance <- 1 + error_term
+    dinner_chance <- 10
+  }
+
+  return(c(breakfast_chance, lunch_chance, dinner_chance))
+}

@@ -709,6 +709,8 @@ evening_traits <- c(
   "Leal"
 )
 
+# Prefered meal
+meals <- c("Café da manhã", "Almoço", "Jantar")
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -873,9 +875,12 @@ prefered_travel <- mapply(
 )
 
 # Period of the day
-prefered_travel <- mapply(
+prefered_day_period <- mapply(
   generate_day_period_preference,
   age,
   personality,
   seed_list
 )
+
+# Prefered meal
+prefered_meal <- mapply(generate_meal_preference, age, prefered_day_period)

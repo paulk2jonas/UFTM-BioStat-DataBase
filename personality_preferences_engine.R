@@ -65,3 +65,18 @@ generate_day_period_preference <- function(age, personality, seed_list) {
   )
   return(day_period)
 }
+
+# Prefered meal
+generate_meal_preference <- function(age, prefered_day_period) {
+  if (!validate_meal_age(age)) return(NA)
+
+  prob <- calculate_meal_chances(prefered_day_period)
+
+  meal <- sample(
+    x = meals,
+    size = 1,
+    prob = prob
+  )
+
+  return(meal)
+}

@@ -31,6 +31,7 @@ validate_schooling_level <- function(age, reading) {
   return(right_age & reads)
 }
 
+# Football team
 validate_football_fan <- function(age, sex) {
   if (age < 4) return(FALSE)
 
@@ -45,10 +46,18 @@ validate_football_fan <- function(age, sex) {
   return(TRUE)
 }
 
+# Travel Destiny
 validate_travel_age <- function(age) {
   if (age < 7) return(FALSE) else return(TRUE)
 }
 
+# Period of the day
 validate_day_period_age <- function(age) {
   if (age < 5) return(FALSE) else return(TRUE)
+}
+
+# Prefered meal
+validate_meal_age <- function(age) {
+  if (age < 6) return(FALSE) else return(TRUE)
+  # can never be less than the day period cut
 }
