@@ -120,9 +120,9 @@ INPUT .\student_manual-pt.toc
 INPUT student_manual-pt.toc
 INPUT student_manual-pt.toc
 INPUT C:\Users\pedro\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx10.tfm
-OUTPUT student_manual-pt.toc
 OUTPUT student_manual-pt.pdf
 INPUT C:\Users\pedro\AppData\Local\MiKTeX\fonts\map\pdftex\pdftex.map
+OUTPUT student_manual-pt.toc
 INPUT C:\Users\pedro\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmsl10.tfm
 INPUT C:\Users\pedro\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr17.tfm
 INPUT C:\Users\pedro\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmbx12.tfm

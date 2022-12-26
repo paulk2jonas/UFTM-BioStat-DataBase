@@ -610,3 +610,15 @@ generate_abo_personality <- function(abo_type) {
 
   return(traits)
 }
+
+generate_football_team <- function(age, sex) {
+  if (!validate_football_fan(age, sex)) return("Não torce")
+
+  team <- sample(
+    x = football_clubs$club,
+    size = 1,
+    prob = football_clubs$fanbase
+  )
+
+  return(team)
+}

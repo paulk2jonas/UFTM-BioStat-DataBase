@@ -30,3 +30,17 @@ validate_schooling_level <- function(age, reading) {
 
   return(right_age & reads)
 }
+
+validate_football_fan <- function(age, sex) {
+  if (age < 4) return(FALSE)
+
+  if (sex == "F") {
+    fan <- sample(
+      x = c(TRUE, FALSE),
+      size = 1
+    )
+    return(fan)
+  }
+
+  return(TRUE)
+}

@@ -13,6 +13,7 @@
 #     Get a new standard deviation for adults, and create a impacting score from sports
 #     Verify if the paths work elsewhere
 #     Add some relation between private schools and college prevalence
+#     Add relation between location and football team
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -572,6 +573,10 @@ blood_type_personality_traits <- list(
   )
 )
 
+# -------------------------- Prefered Football Club -------------------------- #
+# TODO: Add city/state preference later
+football_clubs <- read_excel("./Background_Data/football_clubs.xlsx")
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -722,3 +727,6 @@ blood_type <- paste(abo_type, rh_type, sep = " ")
 
 # Personality traits
 personality <- mapply(generate_abo_personality, abo_type)
+
+# -------------------------- Prefered Football Club -------------------------- #
+football_team <- mapply(generate_football_team, age, sex)
