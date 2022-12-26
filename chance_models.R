@@ -50,3 +50,15 @@ calculate_traits_chances <- function(abo_type, possible_traits) {
 
   return(prob)
 }
+
+calculate_travel_chances <- function(personality) {
+  beach_matches <- sum(str_detect(personality, beach_traits))
+  country_matches <- sum(str_detect(personality, country_traits))
+  city_matches <- sum(str_detect(personality, city_traits))
+
+  beach_chance <- ifelse(beach_matches >= 1, 2 * beach_matches, 1)
+  country_chance <- ifelse(country_matches >= 1, 2 * country_matches, 1)
+  city_chance <- ifelse(city_matches >= 1, 2 * city_matches, 1)
+
+  return(c(beach_chance, country_chance, city_chance))
+}

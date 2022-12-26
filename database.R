@@ -553,7 +553,7 @@ blood_type_personality_traits <- list(
     "Misterioso",
     "Diplomata",
     "Confiável",
-    "Sociável"
+    "Social"  # was "Sociável"
   ),
   "O" = c(
     "Otimista",
@@ -573,9 +573,69 @@ blood_type_personality_traits <- list(
   )
 )
 
-# -------------------------- Prefered Football Club -------------------------- #
+# -------------------------------- Preferences ------------------------------- #
+# Football Team
 # TODO: Add city/state preference later
 football_clubs <- read_excel("./Background_Data/football_clubs.xlsx")
+
+# Travel Destiny
+destinies <- c("Praia", "Campo", "Cidade")
+
+beach_traits <- c(
+  "Intenso",
+  "Criativo",
+  "Forte",
+  "Aventureiro",
+  "Animado",
+  "Disposto",
+  "Proativo",
+  "Jovial",
+  "Espiritual",
+  "Otimista",
+  "Confiante",
+  "Determinado",
+  "Energético",
+  "Social",
+  "Líder"
+)
+country_traits <- c(
+  "Tímido",
+  "Sensível",
+  "Paciente",
+  "Ansioso",
+  "Reservado",
+  "Aventureiro",
+  "Disposto",
+  "Inconvencional",
+  "Dual",
+  "Reflexivo",
+  "Controlado",
+  "Espiritual",
+  "Centrado",
+  "Artístico",
+  "Misterioso",
+  "Calmo",
+  "Intuitivo",
+  "Trabalhador",
+  "Independente"
+)
+city_traits <- c(
+  "Organizado",
+  "Meticuloso",
+  "Educado",
+  "Responsável",
+  "Perfeccionista",
+  "Pragmático",
+  "Racional",
+  "Controlado",
+  "Centrado",
+  "Diplomata",
+  "Social",
+  "Energético",
+  "Líder",
+  "Trabalhador",
+  "Centrado"
+)
 
 
 # ---------------------------------------------------------------------------- #
@@ -728,5 +788,9 @@ blood_type <- paste(abo_type, rh_type, sep = " ")
 # Personality traits
 personality <- mapply(generate_abo_personality, abo_type)
 
-# -------------------------- Prefered Football Club -------------------------- #
+# -------------------------------- Preferences ------------------------------- #
+# Football Team
 football_team <- mapply(generate_football_team, age, sex)
+
+# Travel Destiny
+prefered_travel <- mapply(generate_travel_preference, age, personality, seed_list)
