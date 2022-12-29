@@ -780,6 +780,9 @@ race_view <- c(
 )
 sex_view <- c("M" = "Positiva", "F" = "Negativa")
 
+# Favorite Color
+favorite_color_freq <- read_excel("./Background_Data/color.xlsx")
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -978,3 +981,9 @@ world_view <- mapply(
   income_minimum_wage,
   seed_list
 )
+
+# Political Position
+# * To be implemented
+
+# Favorite Color
+favorite_color <- mapply(generate_favorite_color, age, seed_list)

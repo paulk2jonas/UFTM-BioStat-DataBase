@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1672282784 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1672282785 0
+["pdflatex"] 1672349561 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1672349562 0
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1671583177 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1670727082 11548 929b5a87da165092d9de3fc55e51768d ""
   "C:/Users/pedro/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1670721114 10788374 1cb8d7091c4a29b3b184e50ac21af783 ""
@@ -37,10 +37,10 @@
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/listings/lstlang3.sty" 1623004943 90075 280a31c119f13eac0a3dfaff2137635b ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/listings/lstmisc.sty" 1623004942 77022 ee25ce086f4a79d8cf73bac6f94c02a5 ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
-  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1672282780 10845 7466cfe05b9debeab5152a97d622630d ""
-  "student_manual-pt.aux" 1672282785 5206 b6af094cd35ea37e11e65832d52d665b "pdflatex"
-  "student_manual-pt.tex" 1672282780 10845 7466cfe05b9debeab5152a97d622630d ""
-  "student_manual-pt.toc" 1672282785 3106 70f3ae90be8a8d07dba36b15c662f494 "pdflatex"
+  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1672349555 10930 288dad1dd201fb3f349ec2badc13f1a4 ""
+  "student_manual-pt.aux" 1672349562 5314 bf1c3766ee99a57305076141b1a09b55 "pdflatex"
+  "student_manual-pt.tex" 1672349555 10930 288dad1dd201fb3f349ec2badc13f1a4 ""
+  "student_manual-pt.toc" 1672349562 3173 b7e885fa3fc079526fd19595df05575a "pdflatex"
   (generated)
   "student_manual-pt.aux"
   "student_manual-pt.log"

@@ -108,7 +108,7 @@ generate_world_view <- function(
   income_minimum_wage,
   seed_list
 ) {
-  if (!(validate_world_view_age(age))) return(NA)
+  if (!validate_world_view_age(age)) return(NA)
 
   prob <- calculate_world_view_chances(
     age,
@@ -130,4 +130,24 @@ generate_world_view <- function(
   )
 
   return(world_view)
+}
+
+# Political Position
+# * To be implemented
+# generate_political_position <- function(age) {
+#   if (!validate_poitical_age(age)) return(NA)
+# }
+
+# Favorite Color
+generate_favorite_color <- function(age, seed_list) {
+  if (!validate_color_age(age)) return(NA)
+
+  set.seed(seed_list)
+  color <- sample(
+    x = favorite_color_freq$color,
+    size = 1,
+    prob = favorite_color_freq$freq
+  )
+
+  return(color)
 }

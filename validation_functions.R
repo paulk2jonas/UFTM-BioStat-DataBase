@@ -77,3 +77,14 @@ validate_marital_age <- function(age) {
 validate_world_view_age <- function(age) {
   if (age < 14) return(FALSE) else return(TRUE)
 }
+
+# Political Position
+# * To be implemented
+# validate_political_age <- function(age) {
+#   if (age < 18) return(FALSE) else return(TRUE)
+# }
+
+# Favorite Color
+validate_color_age <- function(age) {
+  if (age < 4) return(FALSE) else return(TRUE)
+}

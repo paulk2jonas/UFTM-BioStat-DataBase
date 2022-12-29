@@ -157,3 +157,6 @@ calculate_world_view_chances <- function(
 
   return(world_view_points$Freq)
 }
+
+# Political Position
+# * To be implemented
