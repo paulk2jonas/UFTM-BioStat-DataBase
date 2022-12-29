@@ -95,3 +95,39 @@ generate_favorite_food <- function(age, state, seed_list) {
 
   return(favorite_food)
 }
+
+# World View # ! Não esquecer de tirar o seed_list da calc
+generate_world_view <- function(
+  age,
+  situation,
+  marital_status,
+  employment,
+  reading,
+  race,
+  sex,
+  income_minimum_wage,
+  seed_list
+) {
+  if (!(validate_world_view_age(age))) return(NA)
+
+  prob <- calculate_world_view_chances(
+    age,
+    situation,
+    marital_status,
+    employment,
+    reading,
+    race,
+    sex,
+    income_minimum_wage,
+    seed_list
+  )
+
+  set.seed(seed_list)
+  world_view <- sample(
+    x = world_views,
+    size = 1,
+    prob = prob
+  )
+
+  return(world_view)
+}

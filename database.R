@@ -50,6 +50,7 @@ source("./config.R")
 source("./personal_info_engine.R")
 source("./socio-economics_engine.R")
 source("./health_engine.R")
+source("./personality_preferences_engine.R")
 source("./validation_functions.R")
 source("./helper_functions.R")
 source("./chance_models.R")
@@ -757,6 +758,28 @@ state_foods <- list(
   "São Paulo" = c("Virado à paulista", "Camarão na moranga")
 )
 
+# World View
+world_views <- c("Negativa", "Realista", "Positiva")
+
+situation_view <- c("Urbana" = "Negativa", "Rural" = "Positiva")
+marital_view <- c(
+  "Solteiro(a)" = "Positiva",
+  "Casado(a)" = "Realista",
+  "Divorciado(a)" = "Negativa",
+  "Viúvo(a)" = "Realista",
+  "NA" = NA
+)
+employment_view <- c("TRUE" = "Positiva", "FALSE" = "Negativa")
+reading_view <- c("S" = "Realista", "N" = "Negativa")
+race_view <- c(
+  "Branco" = "Positiva",
+  "Pardo" = "Realista",
+  "Amarelo" = "Positiva",
+  "Preto" = "Negativa",
+  "Indígena" = "Negativa"
+)
+sex_view <- c("M" = "Positiva", "F" = "Negativa")
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -941,3 +964,17 @@ prefered_meal <- mapply(
 
 # Favorite food
 favorite_food <- mapply(generate_favorite_food, age, state, seed_list)
+
+# World View
+world_view <- mapply(
+  generate_world_view,
+  age,
+  situation,
+  marital_status,
+  employment,
+  reading,
+  race,
+  sex,
+  income_minimum_wage,
+  seed_list
+)

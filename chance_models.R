@@ -118,3 +118,42 @@ calculate_marital_chances <- function(situation, age) {
 
   return(situation_chance * age_chance)
 }
+
+calculate_world_view_chances <- function(
+  age,
+  situation,
+  marital_status,
+  employment,
+  reading,
+  race,
+  sex,
+  income_minimum_wage,
+  seed_list
+) {
+  factors <- c(
+    situation_view[situation],
+    marital_view[as.character(marital_status)],
+    employment_view[as.character(employment)],
+    reading_view[reading],
+    race_view[race],
+    sex_view[sex]
+  )
+  age_factor <- (age - 7) / 86  # adds to negative, takes from positive
+  # rn (dez/27/22), minimum wage should be about 6x bigger according to DIEESE
+  # So I'll use 6x as the cut ->
+  if (is.na(income_minimum_wage)) {
+    income_factor <- -.5
+  } else {
+    income_factor <- (income_minimum_wage - 6) / 4
+    # adds to positive, takes from negative
+  }
+
+  world_view_points <- tabulate_world_view_points(factors)
+  world_view_points <- add_world_view_points(
+    world_view_points,
+    age_factor,
+    income_factor
+  )
+
+  return(world_view_points$Freq)
+}

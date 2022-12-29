@@ -72,3 +72,8 @@ validate_food_age <- function(age) {
 validate_marital_age <- function(age) {
   if (age < 16) return(FALSE) else return(TRUE)
 }
+
+# World View
+validate_world_view_age <- function(age) {
+  if (age < 14) return(FALSE) else return(TRUE)
+}
