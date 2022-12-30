@@ -8,6 +8,14 @@ find_city_code <- function(state_name, city_name) {
   return(city_code)
 }
 
+calculate_age_in_months <- function(study_date = study_date, birth = birth) {
+  # ! For some reason, both arguments must be given
+  # * Maybe the "standard" isn't working like that (variable)
+  age_in_months <- floor((birth %--% study_date) / months(1))
+
+  return(age_in_months)
+}
+
 # * Create function to "unify" age groups
 
 generate_possible_traits <- function(abo_type, seed_list) {
@@ -90,4 +98,34 @@ sort_world_view_df <- function(world_view_points) {
   )
 
   return(world_view_points)
+}
+
+# Hemogram 1
+select_hemogram_age <- function(age, study_date, birth, sex) {
+  if (age < 1) {
+    age_in_months <- calculate_age_in_months(study_date, birth)
+
+    for (i in seq_along(hemogram_baby_groups)) {
+      if (age_in_months %in% hemogram_baby_groups[[i]]) {
+        group <- names(hemogram_baby_groups[i])
+      } else {
+        group <- "1-2 years"
+      }
+    }
+  } else if (age <= 10) {
+    for (i in seq_along(hemogram_age_groups)) {
+      if (age %in% hemogram_age_groups[[i]]) {
+        group <- names(hemogram_age_groups[i])
+      }
+    }
+  } else if (age >= 70) {
+    group <- "70 years or more"
+  } else if (sex == "M") {
+    group <- "male adult"
+  } else if (sex == "F") {
+    group <- "female adult"
+  }
+
+  filtered_table <- filter(hemogram_data_1, age == group)
+  return(filtered_table)
 }

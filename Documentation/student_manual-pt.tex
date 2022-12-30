@@ -1,6 +1,6 @@
 \documentclass{book}
 \usepackage[portuguese]{babel}
-\usepackage{listings, xcolor}
+\usepackage{listings, xcolor, unitsdef}  % ! Need to fix the unities
 
 \definecolor{backgroundcodigo}{RGB}{240,240,240}
 
@@ -157,6 +157,20 @@ A prática de atividade esportiva é representada em duas colunas. A primeira in
 
 \subsection{Tipo sanguíneo}
 O tipo sanguíneo é representado por um termo: o primeiro se refere ao tipo no sistema ABO, e o segundo no sistema Rh . Dependendo da análise desejada, pode ser conveniente separar os dois sistemas em colunas diferentes.
+
+\section{Hemograma}
+
+\subsection{Hemácias (Hc)}
+Contagem de hemácias, em milhões por microlitro (\per{mi}{\microliter}).
+
+\subsection{Hemoglobina (Hb)}
+Quantidade de hemoglobina, em gramas por decilitro (\per{\gram}{\deciliter}).
+
+\subsection{Hematórcrito (Ht)}
+Proporção de hemácias no sangue, em porcentagem (\percent).
+
+\subsection{Volume Corpuscular Médio (VCM)}
+Volume médio das hemácias, calculado por \(\frac{Ht \times 10}{Hc}\), em fentolitros (\femtoliter).
 
 \chapter{Técnicas úteis}
 \section{Tratar NAs}

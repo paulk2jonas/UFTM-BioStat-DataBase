@@ -14,6 +14,9 @@
 #     Verify if the paths work elsewhere
 #     Add some relation between private schools and college prevalence
 #     Add relation between location and football team
+#     Set up the blood work part to respect normality always, except when
+#       a disease has already been chosen
+#     Add an influence of rbc count to ht
 #
 #   * The cities:
 #       Mojuí dos Campos (PA)
@@ -50,6 +53,7 @@ source("./config.R")
 source("./personal_info_engine.R")
 source("./socio-economics_engine.R")
 source("./health_engine.R")
+source("./hemogram_engine.R")
 source("./personality_preferences_engine.R")
 source("./validation_functions.R")
 source("./helper_functions.R")
@@ -783,6 +787,25 @@ sex_view <- c("M" = "Positiva", "F" = "Negativa")
 # Favorite Color
 favorite_color_freq <- read_excel("./Background_Data/color.xlsx")
 
+# --------------------------------- Hemogram --------------------------------- #
+hemogram_data_1 <- read_excel("./Background_Data/hemogram.xlsx", sheet = 1)
+hemogram_data_2 <- read_excel("./Background_Data/hemogram.xlsx", sheet = 2)
+
+hemogram_age_groups <- list(
+  "1-2 years" = 1:2,
+  "3-5 years" = 3:5,
+  "6-10 years" = 6:10,
+  "male adult" = "M",  # ! may not need from here on
+  "female adult" = "F",
+  "70 years or more" = 70:100
+)
+hemogram_baby_groups <- list(
+  # I think the month age thing is "up to" the month, so...
+  "1 month" = 0:1,
+  "3 months" = 2:3,
+  "6 months" = 4:6
+)
+
 
 # ---------------------------------------------------------------------------- #
 #                                Data Generation                               #
@@ -987,3 +1010,37 @@ world_view <- mapply(
 
 # Favorite Color
 favorite_color <- mapply(generate_favorite_color, age, seed_list)
+
+# --------------------------------- Hemogram --------------------------------- #
+# Erythrocyte Count
+erythrocytes <- mapply(
+  generate_erythrocyte_count,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Hemoglobin
+hemoglobin <- mapply(
+  generate_hemoglobin,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Hematocrit
+hematocrit <- mapply(
+  generate_hematocrit,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# MCV
+mcv <- generate_mcv(hematocrit, erythrocytes)

@@ -262,6 +262,7 @@ eye_color_generator <- function(seed, eye_color_list, eye_color_distribution) {
 # -------------------------------- Height (cm) ------------------------------- #
 height_generator <- function(seed_list, birth, study_date, sex) {
   age_in_months <- floor((birth %--% study_date) / months(1))
+  # TODO: Change all these to the helper function
   if (sex == "M" && age_in_months <= 228) {
     mean <- filter(boys_height_table, month == age_in_months) %>%
       pull("mean")
