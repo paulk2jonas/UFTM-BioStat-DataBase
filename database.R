@@ -1118,3 +1118,6 @@ eosinophils_perc <- generate_eosinophils_percent(eosinophils, leukocytes)
 
 # Basophils Percentage
 basophils_perc <- generate_basophils_percent(basophils, leukocytes)
+
+# Platelets
+platelets <- mapply(generate_platelets_count, seed_list)

@@ -177,3 +177,20 @@ generate_basophils_percent <- function(basophils, leukocytes) {
 
   return(basophils_perc)
 }
+
+# --------------------------------- Platelets -------------------------------- #
+generate_platelets_count <- function(seed_list) {
+  set.seed(seed_list)
+  platelets <- rnorm(
+    n = 1,
+    mean = filter(hemogram_data_2, variable == "platelets") %>%
+      pull("mean") / 1000,
+    sd = filter(hemogram_data_2, variable == "platelets") %>%
+      pull("sd") / 1000
+  )
+
+  if (platelets < 0) platelets <- 0
+  platelets <- round(platelets)
+
+  return(platelets)
+}
