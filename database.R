@@ -1044,3 +1044,77 @@ hematocrit <- mapply(
 
 # MCV
 mcv <- generate_mcv(hematocrit, erythrocytes)
+
+# Neutrophils
+neutrophils <- mapply(
+  generate_neutrophils,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Lymphocytes
+lymphocytes <- mapply(
+  generate_lymphocytes,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Monocytes
+monocytes <- mapply(
+  generate_monocytes,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Eosinophils
+eosinophils <- mapply(
+  generate_eosinophils,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Basophils
+basophils <- mapply(
+  generate_basophils,
+  age,
+  study_date,
+  birth,
+  sex,
+  seed_list
+)
+
+# Leukocyte Count
+leukocytes <- generate_leukocyte_count(
+  neutrophils,
+  lymphocytes,
+  monocytes,
+  eosinophils,
+  basophils
+)
+
+# Neutrophils Percentage
+neutrophils_perc <- generate_neutrophils_percent(neutrophils, leukocytes)
+
+# Lymphocytes Percentage
+lymphocytes_perc <- generate_lymphocytes_percent(lymphocytes, leukocytes)
+
+# Monocytes Percentage
+monocytes_perc <- generate_monocytes_percent(monocytes, leukocytes)
+
+# Eosinophils Percentage
+eosinophils_perc <- generate_eosinophils_percent(eosinophils, leukocytes)
+
+# Basophils Percentage
+basophils_perc <- generate_basophils_percent(basophils, leukocytes)

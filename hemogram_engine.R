@@ -54,3 +54,126 @@ generate_mcv <- function(hematocrit, erythrocytes) {
 }
 
 # -------------------------------- White Cells ------------------------------- #
+# Neutrophils
+generate_neutrophils <- function(age, study_date, birth, sex, seed_list) {
+  age_filtered_table <- select_hemogram_age(age, study_date, birth, sex)
+  neutrophils_mean <- pull(age_filtered_table, neutrophils_mean)
+  neutrophils_sd <- pull(age_filtered_table, neutrophils_sd)
+
+  set.seed(seed_list)
+  neutrophils <- rnorm(n = 1, mean = neutrophils_mean, sd = neutrophils_sd)
+  if (neutrophils < 0) neutrophils <- 0
+  # All white cells will be minimum 0
+  neutrophils <- round(neutrophils)
+
+  return(neutrophils)
+}
+
+# Lymphocytes
+generate_lymphocytes <- function(age, study_date, birth, sex, seed_list) {
+  age_filtered_table <- select_hemogram_age(age, study_date, birth, sex)
+  lymphocytes_mean <- pull(age_filtered_table, lymphocytes_mean)
+  lymphocytes_sd <- pull(age_filtered_table, lymphocytes_sd)
+
+  set.seed(seed_list)
+  lymphocytes <- rnorm(n = 1, mean = lymphocytes_mean, sd = lymphocytes_sd)
+  if (lymphocytes < 0) lymphocytes <- 0
+  lymphocytes <- round(lymphocytes)
+
+  return(lymphocytes)
+}
+
+# Monocytes
+generate_monocytes <- function(age, study_date, birth, sex, seed_list) {
+  age_filtered_table <- select_hemogram_age(age, study_date, birth, sex)
+  monocytes_mean <- pull(age_filtered_table, monocytes_mean)
+  monocytes_sd <- pull(age_filtered_table, monocytes_sd)
+
+  set.seed(seed_list)
+  monocytes <- rnorm(n = 1, mean = monocytes_mean, sd = monocytes_sd)
+  if (monocytes < 0) monocytes <- 0
+  monocytes <- round(monocytes)
+
+  return(monocytes)
+}
+
+# Eosinophils
+generate_eosinophils <- function(age, study_date, birth, sex, seed_list) {
+  age_filtered_table <- select_hemogram_age(age, study_date, birth, sex)
+  eosinophils_mean <- pull(age_filtered_table, eosinophils_mean)
+  eosinophils_sd <- pull(age_filtered_table, eosinophils_sd)
+
+  set.seed(seed_list)
+  eosinophils <- rnorm(n = 1, mean = eosinophils_mean, sd = eosinophils_sd)
+  if (eosinophils < 0) eosinophils <- 0
+  eosinophils <- round(eosinophils)
+
+  return(eosinophils)
+}
+
+# Basophils
+generate_basophils <- function(age, study_date, birth, sex, seed_list) {
+  age_filtered_table <- select_hemogram_age(age, study_date, birth, sex)
+  basophils_mean <- pull(age_filtered_table, basophils_mean)
+  basophils_sd <- pull(age_filtered_table, basophils_sd)
+
+  set.seed(seed_list)
+  basophils <- rnorm(n = 1, mean = basophils_mean, sd = basophils_sd)
+  if (basophils < 0) basophils <- 0
+  basophils <- round(basophils)
+
+  return(basophils)
+}
+
+# White Cell Count
+generate_leukocyte_count <- function(
+  neutrophils,
+  lymphocytes,
+  monocytes,
+  eosinophils,
+  basophils
+) {
+  leukocytes <- neutrophils + lymphocytes + monocytes + eosinophils + basophils
+
+  return(leukocytes)
+}
+
+# Neutrophils Percentage
+generate_neutrophils_percent <- function(neutrophils, leukocytes) {
+  neutrophils_perc <- (neutrophils / leukocytes) * 100
+  neutrophils_perc <- round(neutrophils_perc, 2)
+
+  return(neutrophils_perc)
+}
+
+# Lymphocytes Percentage
+generate_lymphocytes_percent <- function(lymphocytes, leukocytes) {
+  lymphocytes_perc <- (lymphocytes / leukocytes) * 100
+  lymphocytes_perc <- round(lymphocytes_perc, 2)
+
+  return(lymphocytes_perc)
+}
+
+# Monocytes Percentage
+generate_monocytes_percent <- function(monocytes, leukocytes) {
+  monocytes_perc <- (monocytes / leukocytes) * 100
+  monocytes_perc <- round(monocytes_perc, 2)
+
+  return(monocytes_perc)
+}
+
+# Eosinophils Percentage
+generate_eosinophils_percent <- function(eosinophils, leukocytes) {
+  eosinophils_perc <- (eosinophils / leukocytes) * 100
+  eosinophils_perc <- round(eosinophils_perc, 2)
+
+  return(eosinophils_perc)
+}
+
+# Basophils Percentage
+generate_basophils_percent <- function(basophils, leukocytes) {
+  basophils_perc <- (basophils / leukocytes) * 100
+  basophils_perc <- round(basophils_perc, 2)
+
+  return(basophils_perc)
+}
