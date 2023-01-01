@@ -160,3 +160,50 @@ calculate_world_view_chances <- function(
 
 # Political Position
 # * To be implemented
+
+# ----------------------------------- Drugs ---------------------------------- #
+# Alcohol
+calculate_drug_chances <- function(
+  drug,
+  sex,
+  age_group,
+  schooling_group,
+  seed_list
+) {
+  drug_1 <- drug
+  sex_1 <- sex
+  # Both because it was causing confusion. Refactor later
+
+  sex_mean <- filter(drug_data_sex, drug == drug_1, sex == sex_1) %>%
+    pull(mean)
+  sex_sd <- filter(drug_data_sex, drug == drug_1, sex == sex_1) %>%
+    pull(sd)
+  set.seed(seed_list)
+  sex_prevalence <- rnorm(n = 1, mean = sex_mean, sd = sex_sd)
+
+  age_mean <- filter(drug_data_age, drug == drug_1, age == age_group) %>%
+    pull(mean)
+  age_sd <- filter(drug_data_age, drug == drug_1, age == age_group) %>%
+    pull(sd)
+  set.seed(seed_list)
+  age_prevalence <- rnorm(n = 1, mean = age_mean, sd = age_sd)
+
+  schooling_mean <- filter(
+    drug_data_schooling,
+    drug == drug_1,
+    schooling == schooling_group
+  ) %>%
+    pull(mean)
+  schooling_sd <- filter(
+    drug_data_schooling,
+    drug == drug_1,
+    schooling == schooling_group
+  ) %>%
+    pull(sd)
+  set.seed(seed_list)
+  schooling_prevalence <- rnorm(n = 1, mean = schooling_mean, sd = schooling_sd)
+
+  use_chance <- mean(sex_prevalence, age_prevalence, schooling_prevalence)
+  no_use_chance <- 100 - use_chance
+  return(c(use_chance, no_use_chance))
+}

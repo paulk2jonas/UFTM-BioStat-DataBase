@@ -581,6 +581,46 @@ blood_type_personality_traits <- list(
   )
 )
 
+# ----------------------------------- Drugs ---------------------------------- #
+drug_data_sex <- read_excel("./Background_Data/drugs.xlsx", sheet = 1)
+drug_data_age <- read_excel("./Background_Data/drugs.xlsx", sheet = 2)
+drug_data_schooling <- read_excel("./Background_Data/drugs.xlsx", sheet = 3)
+# drug_data_illegal <- read_excel("./Background_Data/drugs.xlsx", sheet = 4)
+# ! TO BE IMPLEMENTED
+
+drug_age_groups <- list(
+  "12_17" = 12:17,
+  "18_24" = 18:24,
+  "25_34" = 25:34,
+  "35_44" = 35:44,
+  "45_54" = 45:54,
+  "55_65" = 55:100  # gonna use it straight up as "55 or more"
+)
+
+drug_schooling_groups <- c(
+  "Sem instrução" = "Sem instrução e fundamental incompleto",
+  "Ensino fundamental incompleto" = "Sem instrução e fundamental incompleto",
+  "Ensino fundamental completo" = "Fundamental completo e médio incompleto",
+  "Ensino médio incompleto" = "Fundamental completo e médio incompleto",
+  "Ensino médio completo" = "Médio completo e superior incompleto",
+  "Ensino superior incompleto" = "Médio completo e superior incompleto",
+  "Ensino superior completo" = "Superior completo ou mais"
+)
+
+# possible_illicity_drugs <- c(
+#   "Maconha/Haxixe/Skank",
+#   "Cocaína",
+#   "Crack ou similares",
+#   "Solventes",
+#   "Ecstasy/MDMA",
+#   "Injetáveis",
+#   "Heroína",
+#   "LSD",
+#   "Quetamina",
+#   "Chá de Ayahuasca"
+# )
+# ! TO BE IMPLEMENTED
+
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
 # TODO: Add city/state preference later
@@ -959,6 +999,19 @@ blood_type <- paste(abo_type, rh_type, sep = " ")
 
 # Personality traits
 personality <- mapply(generate_abo_personality, abo_type, seed_list)
+
+# ----------------------------------- Drugs ---------------------------------- #
+# Alcohol
+alcohol <- mapply(generate_alcohol_use, age, schooling, sex, seed_list)
+
+# Tobacco
+tobacco <- mapply(generate_tobacco_use, age, schooling, sex, seed_list)
+
+# Non Prescribed Drugs
+non_prescribed_drugs <- mapply(generate_npd_use, age, schooling, sex, seed_list)
+
+# Use of Illegal Drug
+illegal_drug <- mapply(generate_illegal_use, age, schooling, sex, seed_list)
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team

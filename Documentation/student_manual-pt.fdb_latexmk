@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1672451938 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1672451939 0
+["pdflatex"] 1672531399 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1672531400 0
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1672429473 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1000.pk" 1672429485 25420 ba35e3bc879afab233c346ef3f8364b1 ""
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1200.pk" 1672429478 31952 40596652eb0c4cad4445e973281c94d8 ""
@@ -75,10 +75,10 @@
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/unitsdef/config/weigabbr.cfg" 1102967100 233 29c7fee932f7761a04ca29ac5d607a1e ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/unitsdef/unitsdef.sty" 1105231224 17457 54e87f6a330cac7fdd140fce1138c725 ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
-  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1672451935 11896 951cba8f5dc348372d45a2b00472af6d ""
-  "student_manual-pt.aux" 1672451939 6225 cfb621e8854674a17a94a6f6098c090a "pdflatex"
-  "student_manual-pt.tex" 1672451935 11896 951cba8f5dc348372d45a2b00472af6d ""
-  "student_manual-pt.toc" 1672451939 3756 322e2ab924f817ec26608e31cce3e713 "pdflatex"
+  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1672531395 12068 7f382265917d37faa2572004a448bc86 ""
+  "student_manual-pt.aux" 1672531400 6337 0ae62c7d8cc7ca02ef57569009c1b080 "pdflatex"
+  "student_manual-pt.tex" 1672531395 12068 7f382265917d37faa2572004a448bc86 ""
+  "student_manual-pt.toc" 1672531400 3827 bbff450e3d61cab5a71be726f98ce3e9 "pdflatex"
   (generated)
   "student_manual-pt.aux"
   "student_manual-pt.log"

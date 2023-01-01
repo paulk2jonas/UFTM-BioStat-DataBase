@@ -129,3 +129,19 @@ select_hemogram_age <- function(age, study_date, birth, sex) {
   filtered_table <- filter(hemogram_data_1, age == group)
   return(filtered_table)
 }
+
+# Drugs - age groups
+select_drug_age <- function(age) {
+  for (group in seq_along(drug_age_groups)) {
+    if (age %in% drug_age_groups[[group]]) {
+      age_group <- names(drug_age_groups[group])
+    }
+  }
+
+  return(age_group)
+}
+
+# Drugs <- schooling groups
+select_drug_schooling <- function(schooling) {
+  return(drug_schooling_groups[schooling])
+}

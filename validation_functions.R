@@ -88,3 +88,8 @@ validate_world_view_age <- function(age) {
 validate_color_age <- function(age) {
   if (age < 4) return(FALSE) else return(TRUE)
 }
+
+# Drugs
+validate_drug_age <- function(age) {
+  if (age < 12) return(FALSE) else return(TRUE)
+}
