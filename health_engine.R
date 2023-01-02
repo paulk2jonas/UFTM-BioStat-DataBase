@@ -97,7 +97,7 @@ generate_npd_use <- function(age, schooling, sex, seed_list) {
   return(npd)
 }
 
-# Use of illegal Drug
+# Use of Illegal Drug
 generate_illegal_use <- function(age, schooling, sex, seed_list) {
   if (!validate_drug_age(age)) return(NA)
 
@@ -150,3 +150,135 @@ generate_illegal_use <- function(age, schooling, sex, seed_list) {
 # }
 # generate_illegal_drugs(TRUE, 43)
 # ! TO BE IMPLEMENTED
+
+# ------------------------------- Comorbidities ------------------------------ #
+# Hypertension
+generate_hypertension <- function(sex, age, schooling, bmi, seed_list) {
+  if (!validate_hypertension_age(age)) return(FALSE)
+
+  prevalence <- calculate_hypertension_chances(sex, age, schooling, bmi)
+  prob <- c(prevalence, 100 - prevalence)
+
+  set.seed(seed_list)
+  hypertension <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = prob
+  )
+
+  return(hypertension)
+}
+
+# Diagnosed Hypertension
+generate_hypertension_dx <- function(hypertension, seed_list) {
+  if (hypertension) {
+    prob <- calculate_dx_htension_chances()
+
+    set.seed(seed_list)
+    hypertension_dx <- sample(
+      x = c(TRUE, FALSE),
+      size = 1,
+      prob = prob
+    )
+
+    return(hypertension_dx)
+  } else {
+    return(FALSE)
+  }
+}
+
+generate_systolic_tension <- function(
+  hypertension,
+  activity_time,
+  alcohol,
+  seed_list
+) {
+  if (hypertension) {
+    systolic_mean <- htension_systolic_data["mean"]
+    systolic_sd <- htension_systolic_data["sd"]
+  } else {
+    systolic_mean <- normal_systolic_data["mean"]
+    systolic_sd <- normal_systolic_data["sd"]
+  }
+
+  set.seed(seed_list)
+  systolic_tension <- rnorm(
+    n = 1,
+    mean = systolic_mean,
+    sd = systolic_sd
+  )
+
+  modifier <- calculate_btension_modifiers(activity_time, alcohol, seed_list)
+
+  systolic_tension <- systolic_tension + modifier
+
+  if (hypertension) {
+    if (systolic_tension < 130) systolic_tension <- 130
+  } else {
+    if (systolic_tension > 130) systolic_tension <- 130
+  }
+
+  return(round(systolic_tension))
+}
+
+generate_diastolic_tension <- function(
+  hypertension,
+  activity_time,
+  alcohol,
+  systolic_tension,
+  seed_list
+) {
+  if (hypertension) {
+    diastolic_mean <- htension_diastolic_data["mean"]
+    diastolic_sd <- htension_diastolic_data["sd"]
+  } else {
+    diastolic_mean <- normal_diastolic_data["mean"]
+    diastolic_sd <- normal_diastolic_data["sd"]
+  }
+
+  set.seed(seed_list)
+  diastolic_tension <- rnorm(
+    n = 1,
+    mean = diastolic_mean,
+    sd = diastolic_sd
+  )
+
+  modifier <- calculate_btension_modifiers(activity_time, alcohol, seed_list)
+
+  diastolic_tension <- diastolic_tension + modifier
+
+  if (hypertension) {
+    if (diastolic_tension < 130) diastolic_tension <- 130
+  } else {
+    if (diastolic_tension > 130) diastolic_tension <- 130
+  }
+  if (diastolic_tension > systolic_tension - 20) {
+    diastolic_tension <- systolic_tension - 20
+  }
+
+  return(round(diastolic_tension))
+}
+
+generate_reduced_systolic <- function(
+  hypertension_dx,
+  systolic_tension,
+  seed_list
+) {
+  if (!validate_htension_treatment(hypertension_dx)) return(NA)
+
+  reduction <- calculate_systolic_reduction(seed_list)
+
+  return(systolic_tension - reduction)
+}
+
+generate_reduced_diastolic <- function(
+  hypertension_dx,
+  diastolic_tension,
+  seed_list
+) {
+  if (!validate_htension_treatment(hypertension_dx)) return(NA)
+
+  reduction <- calculate_diastolic_reduction(seed_list)
+
+  return(diastolic_tension - reduction)
+}

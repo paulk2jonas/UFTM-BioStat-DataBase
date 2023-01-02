@@ -145,3 +145,69 @@ select_drug_age <- function(age) {
 select_drug_schooling <- function(schooling) {
   return(drug_schooling_groups[schooling])
 }
+
+# Hypertension
+select_schooling_htension_prev <- function(schooling) {
+  schooling_prevalence <- filter(
+    htension_schooling,
+    schooling_level == htension_schooling_groups[schooling]
+  ) %>%
+    pull(mean)  # rn, not gonna consider the confidence interval
+
+  return(schooling_prevalence)
+}
+
+select_nutrition_htension_prev <- function(bmi) {
+  if (bmi < 18.5) {
+    nutrition <- "Baixo peso"
+  } else if (bmi < 30) {
+    nutrition <- "Eutrofia"
+  } else if (bmi < 35) {
+    nutrition <- "Sobrepeso"
+  } else {
+    nutrition <- "Obesidade"
+  }
+
+  nutritional_prevalence <- filter(
+    htension_nutrition,
+    nutritional_state == nutrition
+  ) %>%
+    pull(mean)  # rn, not gonna consider the confidence interval
+
+  return(nutritional_prevalence)
+}
+
+calculate_btension_modifiers <- function(activity_time, alcohol, seed_list) {
+  if (is.na(activity_time)) activity_time <- 0
+  if (is.na(alcohol)) alcohol <- FALSE
+
+  if (activity_time > 2.5) {
+    set.seed(seed_list)
+    modifier_1 <- runif(n = 1, min = -7, max = -4)
+  } else {
+    modifier_1 <- 0
+  }
+
+  if (!alcohol) {
+    set.seed(seed_list)
+    modifier_2 <- runif(n = 1, min = -5, max = -4)
+  } else {
+    modifier_2 <- 0
+  }
+
+  return(mean(c(modifier_1, modifier_2)))
+}
+
+calculate_systolic_reduction <- function(seed_list) {
+  set.seed(seed_list)
+  reduction <- rnorm(n = 1, mean = 10, sd = 6.67)
+
+  return(reduction)
+}
+
+calculate_diastolic_reduction <- function(seed_list) {
+  set.seed(seed_list)
+  reduction <- rnorm(n = 1, mean = 10, sd = 3.5)
+
+  return(reduction)
+}

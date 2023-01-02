@@ -621,6 +621,38 @@ drug_schooling_groups <- c(
 # )
 # ! TO BE IMPLEMENTED
 
+# Hypertension
+htension_schooling <- read_excel(
+  "./Background_Data/hypertension.xlsx",
+  sheet = 1
+)
+htension_nutrition <- read_excel(
+  "./Background_Data/hypertension.xlsx",
+  sheet = 2
+)
+
+htension_schooling_groups <- c(
+  "Sem instrução" = "Nenhuma",
+  "Ensino fundamental incompleto" = "Fundamental 1",
+  "Ensino fundamental completo" = "Fundamental 2",
+  "Ensino médio incompleto" = "Fundamental 2",
+  "Ensino médio completo" = "Médio",
+  "Ensino superior incompleto" = "Médio",
+  "Ensino superior completo" = "Superior"
+)
+
+htension_nutrition_groups <- c(
+  "Baixo peso",
+  "Eutrofia",
+  "Sobrepeso",
+  "Obesidade"
+)
+
+normal_systolic_data <- c(mean = 110, sd = 10)
+normal_diastolic_data <- c(mean = 70, sd = 6.67)
+htension_systolic_data <- c(mean = 160, sd = 13)
+htension_diastolic_data <- c(mean = 100, sd = 10)
+
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
 # TODO: Add city/state preference later
@@ -1012,6 +1044,59 @@ non_prescribed_drugs <- mapply(generate_npd_use, age, schooling, sex, seed_list)
 
 # Use of Illegal Drug
 illegal_drug <- mapply(generate_illegal_use, age, schooling, sex, seed_list)
+
+# ------------------------------- Comorbidities ------------------------------ #
+# Hypertension
+hypertension <- mapply(
+  generate_hypertension,
+  sex,
+  age,
+  schooling,
+  bmi,
+  seed_list
+)
+
+# Diagnosed Hypertension
+hypertension_dx <- mapply(
+  generate_hypertension_dx,
+  hypertension,
+  seed_list
+)
+
+# Systolic Tension
+systolic_tension <- mapply(
+  generate_systolic_tension,
+  hypertension,
+  activity_time,
+  alcohol,
+  seed_list
+)
+
+# Diastolic Tension
+diastolic_tension <- mapply(
+  generate_diastolic_tension,
+  hypertension,
+  activity_time,
+  alcohol,
+  systolic_tension,
+  seed_list
+)
+
+# Post Treatment Systolic Tension
+post_treatment_systolic <- mapply(
+  generate_reduced_systolic,
+  hypertension_dx,
+  systolic_tension,
+  seed_list
+)
+
+# Post Treatment Systolic Tension
+post_treatment_diastolic <- mapply(
+  generate_reduced_diastolic,
+  hypertension_dx,
+  diastolic_tension,
+  seed_list
+)
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team

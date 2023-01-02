@@ -93,3 +93,12 @@ validate_color_age <- function(age) {
 validate_drug_age <- function(age) {
   if (age < 12) return(FALSE) else return(TRUE)
 }
+
+# Hypertension
+validate_hypertension_age <- function(age) {
+  if (age < 40) return(FALSE) else return(TRUE)
+}
+
+validate_htension_treatment <- function(hypertension_dx) {
+  if (hypertension_dx) return(TRUE) else return(FALSE)
+}

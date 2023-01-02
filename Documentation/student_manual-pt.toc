@@ -37,20 +37,22 @@
 \contentsline {subsection}{\numberline {1.4.1}Atividade esportiva}{7}{}%
 \contentsline {subsection}{\numberline {1.4.2}Tipo sanguíneo}{8}{}%
 \contentsline {subsection}{\numberline {1.4.3}Consumo de drogas}{8}{}%
+\contentsline {subsection}{\numberline {1.4.4}Hipertensão}{8}{}%
+\contentsline {subsection}{\numberline {1.4.5}Pressão arterial (PA)}{8}{}%
 \contentsline {section}{\numberline {1.5}Hemograma}{8}{}%
 \contentsline {subsection}{\numberline {1.5.1}Hemácias (Hc)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.2}Hemoglobina (Hb)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.3}Hematórcrito (Ht)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.4}Volume Corpuscular Médio (VCM)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.5}Leucócitos}{8}{}%
-\contentsline {subsubsection}{Neutrófilos, Eosinófilos, Basófilos, Linfócitos e Monócitos}{8}{}%
-\contentsline {subsection}{\numberline {1.5.6}Plaquetas}{8}{}%
-\contentsline {chapter}{\numberline {2}Técnicas úteis}{9}{}%
-\contentsline {section}{\numberline {2.1}Tratar NAs}{9}{}%
-\contentsline {subsection}{\numberline {2.1.1}Códigos para lidar com NAs}{9}{}%
-\contentsline {subsubsection}{Verificando a existência de NAs}{9}{}%
-\contentsline {subsubsection}{Lidando com NAs nativamente}{10}{}%
-\contentsline {subsubsection}{Lidando com NAs usando o Tidyr (do Tidyverse)}{10}{}%
-\contentsline {section}{\numberline {2.2}Manipulação de datas}{10}{}%
-\contentsline {section}{\numberline {2.3}Manipulação de texto}{10}{}%
-\contentsline {section}{\numberline {2.4}Criação de colunas}{10}{}%
+\contentsline {subsubsection}{Neutrófilos, Eosinófilos, Basófilos, Linfócitos e Monócitos}{9}{}%
+\contentsline {subsection}{\numberline {1.5.6}Plaquetas}{9}{}%
+\contentsline {chapter}{\numberline {2}Técnicas úteis}{11}{}%
+\contentsline {section}{\numberline {2.1}Tratar NAs}{11}{}%
+\contentsline {subsection}{\numberline {2.1.1}Códigos para lidar com NAs}{11}{}%
+\contentsline {subsubsection}{Verificando a existência de NAs}{11}{}%
+\contentsline {subsubsection}{Lidando com NAs nativamente}{12}{}%
+\contentsline {subsubsection}{Lidando com NAs usando o Tidyr (do Tidyverse)}{12}{}%
+\contentsline {section}{\numberline {2.2}Manipulação de datas}{12}{}%
+\contentsline {section}{\numberline {2.3}Manipulação de texto}{12}{}%
+\contentsline {section}{\numberline {2.4}Criação de colunas}{12}{}%

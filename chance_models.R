@@ -207,3 +207,34 @@ calculate_drug_chances <- function(
   no_use_chance <- 100 - use_chance
   return(c(use_chance, no_use_chance))
 }
+
+# Hypertension
+calculate_hypertension_chances <- function(sex, age, schooling, bmi) {
+  # The income effect should come here. Refactor later.
+  if (sex == "M") {
+    age_modifier <- (age - 7) / 100
+  } else if (sex == "F") {
+    age_modifier <- (age - 8) / 100
+  }
+  # This "model" is too low rn. Gotta move the starting age.
+  if (age_modifier < 0) age_modifier <- 0
+
+  schooling_prevalence <- select_schooling_htension_prev(schooling)
+  nutritional_prevalence <- select_nutrition_htension_prev(bmi)
+  expected_prevalence <- mean(schooling_prevalence, nutritional_prevalence)
+  prevalence <- 42 * expected_prevalence * age_modifier
+  # Note: 42 was an "experimental" value... to get the prevalence higher
+  # Which means I need to make this model better
+
+  if (prevalence < 0) prevalence <- 0
+  if (prevalence > 100) prevalence <- 100
+
+  return(prevalence)
+}
+
+calculate_dx_htension_chances <- function() {
+  subdiagnosis <- .132
+  diagnosis <- 1 - subdiagnosis
+
+  return(c(diagnosis, subdiagnosis))
+}
