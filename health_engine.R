@@ -282,3 +282,55 @@ generate_reduced_diastolic <- function(
 
   return(diastolic_tension - reduction)
 }
+
+# ----------------------------- Diabetes Mellitus ---------------------------- #
+generate_diabetes_melitus <- function(
+  sex,
+  age,
+  schooling,
+  marital_status,
+  state,
+  bmi,
+  activity,
+  alcohol,
+  hypertension,
+  dm1_prevalence,
+  dm2_prevalence,
+  seed_list
+) {
+  if (!validate_dm_age(age)) return(NA)
+
+  prevalence <- calculate_dm_chances(
+    sex,
+    age,
+    schooling,
+    marital_status,
+    state,
+    bmi,
+    activity,
+    alcohol,
+    hypertension
+  )
+  prob <- c(prevalence, 100 - prevalence)
+
+  set.seed(seed_list)
+  diabetes <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = prob
+  )
+
+  set.seed(seed_list + 42)  # using the same seed was causing it to be always 1
+  # or worse: "FALSE" was going instead of DM Tipo 2
+  if (diabetes) {
+    type <- sample(
+      x = c("DM Tipo 1", "DM Tipo 2"),
+      size = 1,
+      prob = c(dm1_prevalence, dm2_prevalence)
+    )
+  } else {
+    type <- NA
+  }
+
+  return(type)
+}

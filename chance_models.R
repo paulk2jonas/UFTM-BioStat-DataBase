@@ -203,7 +203,7 @@ calculate_drug_chances <- function(
   set.seed(seed_list)
   schooling_prevalence <- rnorm(n = 1, mean = schooling_mean, sd = schooling_sd)
 
-  use_chance <- mean(sex_prevalence, age_prevalence, schooling_prevalence)
+  use_chance <- mean(c(sex_prevalence, age_prevalence, schooling_prevalence))
   no_use_chance <- 100 - use_chance
   return(c(use_chance, no_use_chance))
 }
@@ -221,7 +221,7 @@ calculate_hypertension_chances <- function(sex, age, schooling, bmi) {
 
   schooling_prevalence <- select_schooling_htension_prev(schooling)
   nutritional_prevalence <- select_nutrition_htension_prev(bmi)
-  expected_prevalence <- mean(schooling_prevalence, nutritional_prevalence)
+  expected_prevalence <- mean(c(schooling_prevalence, nutritional_prevalence))
   prevalence <- 42 * expected_prevalence * age_modifier
   # Note: 42 was an "experimental" value... to get the prevalence higher
   # Which means I need to make this model better
@@ -237,4 +237,45 @@ calculate_dx_htension_chances <- function() {
   diagnosis <- 1 - subdiagnosis
 
   return(c(diagnosis, subdiagnosis))
+}
+
+calculate_dm_chances <- function(
+  sex,
+  age,
+  schooling,
+  marital_status,
+  state,
+  bmi,
+  activity,
+  alcohol,
+  hypertension
+) {
+  for (group in seq_along(dm_age_groups)) {
+    if (age %in% dm_age_groups[[group]]) {
+      age_group <- names(dm_age_groups[group])
+    }
+  }
+  if (is.na(marital_status)) marital_status <- "NA"
+  if (marital_status != "Casado(a)") marital_status <- "Outro estado conjugal"
+  dm_bmi <- ifelse(bmi >= 30, "Obeso", "Não obeso")
+  if (is.na(activity)) activity <- "NA"
+  if (activity != "Sedentário") activity <- "Ativo"
+  dm_alcohol <- ifelse(alcohol, "Bebe", "Não bebe")
+  dm_hypertension <- ifelse(hypertension, "Hipertenso", "Não hipertenso")
+
+  factors <- c(
+    sex,
+    age_group,
+    dm_schooling_groups[schooling],
+    state_regions[state],
+    dm_bmi,
+    activity,
+    dm_alcohol,
+    dm_hypertension
+  )
+
+  prevalences <- filter(dm_data, variable %in% factors) %>%
+    pull(prevalence)
+
+  return(mean(prevalences))
 }

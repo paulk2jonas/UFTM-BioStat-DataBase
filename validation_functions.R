@@ -102,3 +102,7 @@ validate_hypertension_age <- function(age) {
 validate_htension_treatment <- function(hypertension_dx) {
   if (hypertension_dx) return(TRUE) else return(FALSE)
 }
+
+validate_dm_age <- function(age) {
+  if (age < initial_dm_age) return(FALSE) else return(TRUE)
+}

@@ -653,6 +653,28 @@ normal_diastolic_data <- c(mean = 70, sd = 6.67)
 htension_systolic_data <- c(mean = 160, sd = 13)
 htension_diastolic_data <- c(mean = 100, sd = 10)
 
+# Diabetes mellitus
+dm_data <- read_excel("./Background_Data/diabetes_mellitus_prevalence.xlsx")
+initial_dm_age <- 7
+dm_subdiagnosis <- .5
+dm1_prevalence <- .1
+dm2_prevalence <- .9
+
+dm_age_groups <- list(
+  "20 a 39 anos" = 0:39,
+  "40 a 64 anos" = 40:64,
+  "65 anos ou mais" = 65:100
+)
+dm_schooling_groups <- c(
+  "Sem instrução" = "Fundamental incompleto",
+  "Ensino fundamental incompleto" = "Fundamental incompleto",
+  "Ensino fundamental completo" = "Fundamental completo",
+  "Ensino médio incompleto" = "Fundamental completo",
+  "Ensino médio completo" = "Médio incompleto ou mais",
+  "Ensino superior incompleto" = "Médio incompleto ou mais",
+  "Ensino superior completo" = "Médio incompleto ou mais"
+)
+
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
 # TODO: Add city/state preference later
@@ -1063,7 +1085,7 @@ hypertension_dx <- mapply(
   seed_list
 )
 
-# Systolic Tension
+# Systolic Pressure
 systolic_tension <- mapply(
   generate_systolic_tension,
   hypertension,
@@ -1072,7 +1094,7 @@ systolic_tension <- mapply(
   seed_list
 )
 
-# Diastolic Tension
+# Diastolic Pressure
 diastolic_tension <- mapply(
   generate_diastolic_tension,
   hypertension,
@@ -1082,7 +1104,7 @@ diastolic_tension <- mapply(
   seed_list
 )
 
-# Post Treatment Systolic Tension
+# Post Treatment Systolic Pressure
 post_treatment_systolic <- mapply(
   generate_reduced_systolic,
   hypertension_dx,
@@ -1090,11 +1112,28 @@ post_treatment_systolic <- mapply(
   seed_list
 )
 
-# Post Treatment Systolic Tension
+# Post Treatment Systolic Pressure
 post_treatment_diastolic <- mapply(
   generate_reduced_diastolic,
   hypertension_dx,
   diastolic_tension,
+  seed_list
+)
+
+# Diabetes Mellitus
+diabetes <- mapply(
+  generate_diabetes_melitus,
+  sex,
+  age,
+  schooling,
+  marital_status,
+  state,
+  bmi,
+  activity,
+  alcohol,
+  hypertension,
+  dm1_prevalence,
+  dm2_prevalence,
   seed_list
 )
 
