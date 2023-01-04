@@ -334,3 +334,19 @@ generate_diabetes_melitus <- function(
 
   return(type)
 }
+
+generate_stroke <- function(age, sex, schooling, seed_list) {
+  if (!validate_stroke_age(age)) return(FALSE)
+
+  prevalence <- calculate_stroke_chances(age, sex, schooling)
+  prob <- c(prevalence, 100 - prevalence)
+
+  set.seed(seed_list)
+  stroke <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = prob
+  )
+
+  return(stroke)
+}

@@ -40,11 +40,12 @@
 \contentsline {subsection}{\numberline {1.4.4}Hipertensão}{8}{}%
 \contentsline {subsection}{\numberline {1.4.5}Pressão arterial (PA)}{8}{}%
 \contentsline {subsection}{\numberline {1.4.6}\textit {Diabetes Mellitus} (DM)}{8}{}%
+\contentsline {subsection}{\numberline {1.4.7}Acidente Vascular Encefálico (AVE)}{8}{}%
 \contentsline {section}{\numberline {1.5}Hemograma}{8}{}%
 \contentsline {subsection}{\numberline {1.5.1}Hemácias (Hc)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.2}Hemoglobina (Hb)}{8}{}%
 \contentsline {subsection}{\numberline {1.5.3}Hematórcrito (Ht)}{8}{}%
-\contentsline {subsection}{\numberline {1.5.4}Volume Corpuscular Médio (VCM)}{8}{}%
+\contentsline {subsection}{\numberline {1.5.4}Volume Corpuscular Médio (VCM)}{9}{}%
 \contentsline {subsection}{\numberline {1.5.5}Leucócitos}{9}{}%
 \contentsline {subsubsection}{Neutrófilos, Eosinófilos, Basófilos, Linfócitos e Monócitos}{9}{}%
 \contentsline {subsection}{\numberline {1.5.6}Plaquetas}{9}{}%

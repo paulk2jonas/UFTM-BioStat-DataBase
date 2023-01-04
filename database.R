@@ -675,6 +675,26 @@ dm_schooling_groups <- c(
   "Ensino superior completo" = "Médio incompleto ou mais"
 )
 
+# Stroke
+stroke_data <- read_excel("./Background_Data/stroke.xlsx", sheet = 1)
+initial_stroke_age <- 18
+stroke_age_groups <- list(
+  "18 a 29 anos" = 0:29,
+  "30 a 59 anos" = 30:59,
+  "60 a 64" = 60:64,
+  "65 a 74" = 65:74,
+  "75 ou mais" = 75:100
+)
+stroke_schooling_groups <- c(
+  "Sem instrução" = "Sem instrução e fundamental incompleto",
+  "Ensino fundamental incompleto" = "Sem instrução e fundamental incompleto",
+  "Ensino fundamental completo" = "Fundamental completo e médio incompleto",
+  "Ensino médio incompleto" = "Fundamental completo e médio incompleto",
+  "Ensino médio completo" = "Médio completo e superior incompleto",
+  "Ensino superior incompleto" = "Médio completo e superior incompleto",
+  "Ensino superior completo" = "Superior completo"
+)
+
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
 # TODO: Add city/state preference later
@@ -1136,6 +1156,9 @@ diabetes <- mapply(
   dm2_prevalence,
   seed_list
 )
+
+# Stroke
+stroke <- mapply(generate_stroke, age, sex, schooling, seed_list)
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team

@@ -279,3 +279,18 @@ calculate_dm_chances <- function(
 
   return(mean(prevalences))
 }
+
+calculate_stroke_chances <- function(age, sex, schooling) {
+  for (group in seq_along(stroke_age_groups)) {
+    if (age %in% stroke_age_groups[[group]]) {
+      age_group <- names(stroke_age_groups[group])
+    }
+  }
+
+  factors <- c(sex, age_group, stroke_schooling_groups[schooling])
+
+  prevalences <- filter(stroke_data, variable %in% factors) %>%
+    pull(had_stroke)
+
+  return(mean(prevalences))
+}
