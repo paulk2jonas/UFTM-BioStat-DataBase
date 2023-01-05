@@ -350,3 +350,46 @@ generate_stroke <- function(age, sex, schooling, seed_list) {
 
   return(stroke)
 }
+
+generate_heart_attack <- function(
+  age,
+  sex,
+  schooling,
+  state,
+  tobacco,
+  hypertension,
+  diabetes,
+  seed_list
+) {
+  if (!validate_heart_attack_age(age)) return(FALSE)
+
+  prevalence <- calculate_heart_attack_chances(age, sex, schooling, state)
+  prob <- c(prevalence, 100 - prevalence)
+  if (!is.na(tobacco) && tobacco) {
+    odds_ratio <- filter(heart_attack_data, variable == "Tabagismo") %>%
+      pull(mean)
+    prob[1] <- prob[1] * odds_ratio
+  }
+  if (hypertension) {
+    odds_ratio <- filter(
+      heart_attack_data,
+      variable == "Hipertensão Arterial"
+    ) %>%
+      pull(mean)
+    prob[1] <- prob[1] * odds_ratio
+  }
+  if (!is.na(diabetes)) {
+    odds_ratio <- filter(heart_attack_data, variable == "Diabetes") %>%
+      pull(mean)
+    prob[1] <- prob[1] * odds_ratio
+  }
+
+  set.seed(seed_list)
+  heart_attack <- sample(
+    x = c(TRUE, FALSE),
+    size = 1,
+    prob = prob
+  )
+
+  return(heart_attack)
+}

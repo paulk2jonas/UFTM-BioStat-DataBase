@@ -294,3 +294,31 @@ calculate_stroke_chances <- function(age, sex, schooling) {
 
   return(mean(prevalences))
 }
+
+calculate_heart_attack_chances <- function(age, sex, schooling, state) {
+  for (group in seq_along(heart_attack_age_groups)) {
+    if (age %in% heart_attack_age_groups[[group]]) {
+      age_group <- names(heart_attack_age_groups[group])
+    }
+  }
+  # if (is.na(tobacco)) tobacco <- FALSE
+  # if (tobacco) {
+  #   smokes <- "Tabagismo"
+  # } else {
+  #   smokes <- "NA"
+  # }
+  # hypertense <- if (hypertension) "Hipertensão Arterial" else "NA"
+  # diabetic <- if (!is.na(diabetes)) "Diabetes" else "NA"
+
+  factors <- c(
+    sex,
+    age_group,
+    heart_attack_schooling_groups[schooling],
+    state_regions[state]
+  )
+
+  prevalences <- filter(heart_attack_data, variable %in% factors) %>%
+    pull(mean)
+
+  return(mean(prevalences))
+}

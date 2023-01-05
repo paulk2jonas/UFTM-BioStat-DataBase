@@ -110,3 +110,7 @@ validate_dm_age <- function(age) {
 validate_stroke_age <- function(age) {
   if (age < initial_stroke_age) return(FALSE) else return(TRUE)
 }
+
+validate_heart_attack_age <- function(age) {
+  if (age < initial_heart_attack_age) return(FALSE) else return(TRUE)
+}
