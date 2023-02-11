@@ -211,3 +211,32 @@ calculate_diastolic_reduction <- function(seed_list) {
 
   return(reduction)
 }
+
+get_heart_rate_data <- function(age, birth, activity_time) {
+  if (age < 1) {
+    if (calculate_age_in_months(study_date, birth) < 1) {
+      heart_rate_mean <- heart_rate_data[["Até 1 mês"]][1]
+      heart_rate_sd <- heart_rate_data[["Até 1 mês"]][2]
+    } else {
+      heart_rate_mean <- heart_rate_data[["Até 1 ano"]][1]
+      heart_rate_sd <- heart_rate_data[["Até 1 ano"]][2]
+    }
+  } else {
+    for (group in seq_along(heart_rate_age_groups)) {
+      if (age %in% heart_rate_age_groups[[group]]) {
+        age_group <- names(heart_rate_age_groups[group])
+      }
+    }
+
+    heart_rate_mean <- heart_rate_data[[age_group]][1]
+    heart_rate_sd <- heart_rate_data[[age_group]][2]
+  }
+
+  if (!is.na(activity_time) && activity_time >= 2.5) {
+    heart_rate_mean <- heart_rate_data[["Adultos treinados"]][1]
+    heart_rate_sd <- heart_rate_data[["Adultos treinados"]][2]
+  }
+
+  return(c(heart_rate_mean, heart_rate_sd))
+}
+get_heart_rate_data(age[1], birth[1], activity_time[1])

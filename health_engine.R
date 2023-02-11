@@ -393,3 +393,18 @@ generate_heart_attack <- function(
 
   return(heart_attack)
 }
+
+# Resting Heart Rate
+generate_heart_rate <- function(age, birth, activity_time, seed_list) {
+  heart_rate_mean <- get_heart_rate_data(age, birth, activity_time)[1]
+  heart_rate_sd <- get_heart_rate_data(age, birth, activity_time)[2]
+
+  set.seed(seed_list)
+  heart_rate <- rnorm(n = 1, mean = heart_rate_mean, sd = heart_rate_sd)
+
+  heart_rate <- round(heart_rate)
+
+  if (heart_rate < 35) heart_rate <- 35
+
+  return(heart_rate)
+}

@@ -2,10 +2,12 @@
 # ---------------------------- Seed List Generator --------------------------- #
 # ! Move to another package, where it makes sense
 seed_generator <- function(n, seed) {
+  set.seed(seed)
   seed_list <- sample(
     x = -(n ** 2):(n ** 2),
     size = n
   )
+
   return(seed_list)
 }
 

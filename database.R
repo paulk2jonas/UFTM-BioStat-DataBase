@@ -718,6 +718,25 @@ heart_attack_schooling_groups <- c(
   "Ensino superior completo" = "Superior completo"
 )
 
+# Resting Heart Rate
+heart_rate_data <- list(
+  "Até 1 mês" = c(mean = 130, sd = 20),
+  "Até 1 ano" = c(mean = 120, sd = 13.33),
+  "1 a 2 anos" = c(mean = 105, sd = 8.33),
+  "3 a 4 anos" = c(mean = 100, sd = 6.67),
+  "5 a 6 anos" = c(mean = 95, sd = 6.67),
+  "7 a 9 anos" = c(mean = 90, sd = 6.67),
+  "10 ou mais" = c(mean = 80, sd = 6.67),  # Ain't this too hight?
+  "Adultos treinados" = c(mean = 50, sd = 3.33)
+)
+heart_rate_age_groups <- list(
+  "Até 1 ano" = 0,
+  "1 a 2 anos" = 1:2,
+  "3 a 4 anos" = 3:4,
+  "5 a 6 anos" = 5:6,
+  "7 a 9 anos" = 7:9,
+  "10 ou mais" = 10:100
+)
 
 # -------------------------------- Preferences ------------------------------- #
 # Football Team
@@ -1194,6 +1213,15 @@ heart_attack <- mapply(
   tobacco,
   hypertension,
   diabetes,
+  seed_list
+)
+
+# Resting Heart Rate
+resting_heart_rate <- mapply(
+  generate_heart_rate,
+  age,
+  birth,
+  activity_time,
   seed_list
 )
 
