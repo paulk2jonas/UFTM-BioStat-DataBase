@@ -99,7 +99,7 @@ birth_date_generator <- function(birth, age) {
 
 # Zodiac Sign
 zodiac_sign_generator <- function(birth) {
-  if (birth %within% interval(dmy(21012022), dmy(21122022))) {
+  if (birth %within% interval(dmy(21012023), dmy(21122023))) {
     #? Is there a way to not use a for? Is this other way faster?
     for (i in 1:11) {
       if (birth %within% zodiac_sign_list[i]) {
@@ -112,6 +112,8 @@ zodiac_sign_generator <- function(birth) {
     return(zodiac_sign)
   }
 }
+# ! The way the intervals are set here make so the code will break every year.
+# * Should try looking for month and day
 
 # Chinese Sign
 chinese_sign_generator <- function(birth) {

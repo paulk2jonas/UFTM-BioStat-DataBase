@@ -28,7 +28,6 @@ for (cbo in seq_along(unique(AC2016$`CBO Ocupação 2002`))) {
     }
   }
 }
-ac_pay[2, ] <- c("Sombra", "Fer Tiemi")
 ac_pay <- data.frame(
   "CBO Ocupação 2002",
   "Escolaridade após 2005",
@@ -157,7 +156,7 @@ please_table_gen <- function(data) {
   my_data <- get_pay(
     data,
     # available_cbo,
-    "Fer Tiemi",
+    "Sombra",
     available_age,
     available_schooling,
     available_city,

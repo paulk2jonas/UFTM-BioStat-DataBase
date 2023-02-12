@@ -1406,6 +1406,7 @@ database <- data.frame(
   "Cor dos olhos" = eye_color,
   "Cidade" = city,
   "Estado" = state,
+  "Estado civil" = marital_status,
   "Personalidade" = personality,
   "Time de futebol" = football_team,
   "Destino de viagem" = prefered_travel,
@@ -1418,7 +1419,7 @@ database <- data.frame(
   "Escolaridade" = schooling,
   "Tipo de acesso à educação" = school_type,
   "Emprego" = occupation,
-  "Renda" = income,
+  "Renda" = income / 100,
   "Velocidade de acesso à internet" = internet_access,
   "Plano de saúde privado" = health_insurance,
   "Atividade esportiva" = activity,
@@ -1455,7 +1456,13 @@ database <- data.frame(
 )
 View(database)
 
-file_name <- paste("database", "seed", seed, sep = "_")
+file_name <- paste(
+  "database_seed",
+  seed,
+  "_n",
+  n,
+  sep = ""
+)
 # Para salvar em CSV:
 write.csv2(
   database,
