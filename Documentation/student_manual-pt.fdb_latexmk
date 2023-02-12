@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1676146526 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1676146528 0
+["pdflatex"] 1676228729 "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" "student_manual-pt.pdf" "student_manual-pt" 1676228731 0
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1672429473 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbi1200.pk" 1672714226 42728 2516a0474ea605d8e80b1d2e91a9a66f ""
   "C:/Users/pedro/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1000.pk" 1672429485 25420 ba35e3bc879afab233c346ef3f8364b1 ""
@@ -108,11 +108,11 @@
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/unitsdef/unitsdef.sty" 1105231224 17457 54e87f6a330cac7fdd140fce1138c725 ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/pedro/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1656236890 56148 51a9a8571c07b9921892ae11063ae853 ""
-  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1676146523 13167 c0e212b1b73e931e0b6ce2d9c19211a6 ""
-  "student_manual-pt.aux" 1676146528 8504 2bdb059e3bbf36edd05fe69408a922f5 "pdflatex"
-  "student_manual-pt.out" 1676146528 8292 646c450135817d07759958ab7399732a "pdflatex"
-  "student_manual-pt.tex" 1676146523 13167 c0e212b1b73e931e0b6ce2d9c19211a6 ""
-  "student_manual-pt.toc" 1676146528 5225 7ae9985dda2054b3b3cbccffd957e9af "pdflatex"
+  "d:/Code/Git Repositories/UFTM-BioStat-DataBase/Documentation/student_manual-pt.tex" 1676228726 13167 0ba100fe76b9c92ac7c712e4ee72d0b6 ""
+  "student_manual-pt.aux" 1676228731 8504 6149e53524be6a1d316b0b7be88d9bda "pdflatex"
+  "student_manual-pt.out" 1676228731 8295 56196510bb63a1570aa44db5197c6c0d "pdflatex"
+  "student_manual-pt.tex" 1676228726 13167 0ba100fe76b9c92ac7c712e4ee72d0b6 ""
+  "student_manual-pt.toc" 1676228731 5225 e9427985b06f0178d80b53fd6b4acbd7 "pdflatex"
   (generated)
   "student_manual-pt.aux"
   "student_manual-pt.log"

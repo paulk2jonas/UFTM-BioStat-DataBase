@@ -268,7 +268,7 @@ generate_reduced_systolic <- function(
 
   reduction <- calculate_systolic_reduction(seed_list)
 
-  return(systolic_tension - reduction)
+  return(round(systolic_tension - reduction))
 }
 
 generate_reduced_diastolic <- function(
@@ -280,7 +280,7 @@ generate_reduced_diastolic <- function(
 
   reduction <- calculate_diastolic_reduction(seed_list)
 
-  return(diastolic_tension - reduction)
+  return(round(diastolic_tension - reduction))
 }
 
 # ----------------------------- Diabetes Mellitus ---------------------------- #

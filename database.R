@@ -164,18 +164,19 @@ load("./Background_Data/birth_frequency.RData")
 
 # Zodiac Sign
 zodiac_sign_list <- list(
-  "Áries" = dmy(21032022) %--% dmy(20042022),
-  "Touro" = dmy(21042022) %--% dmy(20052022),
-  "Gêmeos" = dmy(21052022) %--% dmy(20062022),
-  "Câncer" = dmy(21062022) %--% dmy(22072022),
-  "Leão" = dmy(23072022) %--% dmy(22082022),
-  "Virgem" = dmy(23082022) %--% dmy(22092022),
-  "Libra" = dmy(23092022) %--% dmy(22102022),
-  "Escorpião" = dmy(23102022) %--% dmy(21112022),
-  "Sagitário" = dmy(22112022) %--% dmy(21122022),
-  "Aquário" = dmy(21012022) %--% dmy(19022022),
-  "Peixes" = dmy(20022022) %--% dmy(20032022)
+  "Áries" = dmy(21032023) %--% dmy(20042023),
+  "Touro" = dmy(21042023) %--% dmy(20052023),
+  "Gêmeos" = dmy(21052023) %--% dmy(20062023),
+  "Câncer" = dmy(21062023) %--% dmy(22072023),
+  "Leão" = dmy(23072023) %--% dmy(22082023),
+  "Virgem" = dmy(23082023) %--% dmy(22092023),
+  "Libra" = dmy(23092023) %--% dmy(22102023),
+  "Escorpião" = dmy(23102023) %--% dmy(21112023),
+  "Sagitário" = dmy(22112023) %--% dmy(21122023),
+  "Aquário" = dmy(21012023) %--% dmy(19022023),
+  "Peixes" = dmy(20022023) %--% dmy(20032023)
 )
+# ! BREAKS HERE TOO I HATE MYSELF
 
 # Chinese sign
 chinese_sign_list <- c(
@@ -1386,3 +1387,83 @@ basophils_perc <- generate_basophils_percent(basophils, leukocytes)
 
 # Platelets
 platelets <- mapply(generate_platelets_count, seed_list)
+
+
+# ------------------------------ Table Creation ------------------------------ #
+database <- data.frame(
+  "Nome" = full_name,
+  "Idade" = age,
+  "Data de nascimento" = birth,
+  "Signo do Zodíaco" = zodiac_sign,
+  "Signo chinês" = chinese_sign,
+  "Sexo" = sex,
+  "Altura" = height,
+  "Peso" = weight,
+  "IMC" = bmi,
+  "Percentual de gordura" = bf_percent,
+  "Raça" = race,
+  "Cor do cabelo" = hair_color,
+  "Cor dos olhos" = eye_color,
+  "Cidade" = city,
+  "Estado" = state,
+  "Personalidade" = personality,
+  "Time de futebol" = football_team,
+  "Destino de viagem" = prefered_travel,
+  "Período do dia" = prefered_day_period,
+  "Refeição" = prefered_meal,
+  "Prato" = favorite_food,
+  "Visão de mundo" = world_view,
+  "Cor preferida" = favorite_color,
+  "Alfabetização" = reading,
+  "Escolaridade" = schooling,
+  "Tipo de acesso à educação" = school_type,
+  "Emprego" = occupation,
+  "Renda" = income,
+  "Velocidade de acesso à internet" = internet_access,
+  "Plano de saúde privado" = health_insurance,
+  "Atividade esportiva" = activity,
+  "Tipo sanguíneo" = blood_type,
+  "Etilismo" = alcohol,
+  "Tabagismo" = tobacco,
+  "Drogas não prescritas" = non_prescribed_drugs,
+  "Drogas ilegais" = illegal_drug,
+  "Hipertensão" = hypertension_dx,
+  "Pressão sistólica" = systolic_tension,
+  "Pressão diastólica" = diastolic_tension,
+  "Pressão sistólica após tratamento" = post_treatment_systolic,
+  "Pressão diastólica após tratamento" = post_treatment_diastolic,
+  "Frequência cardíaca" = resting_heart_rate,
+  "Diabetes Mellitus" = diabetes,
+  "Acidente Vascular Encefálico" = stroke,
+  "Infarto Agudo do Miocárdio" = heart_attack,
+  "Hemácias" = erythrocytes,
+  "Hemoglobina" = hemoglobin,
+  "Hematócrito" = hematocrit,
+  "VCM" = mcv,
+  "Leucócitos" = leukocytes,
+  "Basófilos" = basophils,
+  "Basófilos %" = basophils_perc,
+  "Eosinófilos" = eosinophils,
+  "Eosinófilos %" = eosinophils_perc,
+  "Neutrófilos" = neutrophils,
+  "Neutrófilos %" = neutrophils_perc,
+  "Linfócitos" = lymphocytes,
+  "Linfócitos %" = lymphocytes_perc,
+  "Monócitos" = monocytes,
+  "Monócitos %" = monocytes_perc,
+  "Plaquetas" = platelets
+)
+View(database)
+
+file_name <- paste("database", "seed", seed, sep = "_")
+# Para salvar em CSV:
+write.csv2(
+  database,
+  file = paste(file_name, ".csv", sep = ""),
+  row.names = FALSE
+)
+# Para salvar em RData:
+save(
+  database,
+  file = paste(file_name, ".RData", sep = "")
+)
