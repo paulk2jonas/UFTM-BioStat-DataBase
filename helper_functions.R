@@ -239,4 +239,3 @@ get_heart_rate_data <- function(age, birth, activity_time) {
 
   return(c(heart_rate_mean, heart_rate_sd))
 }
-get_heart_rate_data(age[1], birth[1], activity_time[1])
